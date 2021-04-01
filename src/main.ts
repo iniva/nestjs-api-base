@@ -8,9 +8,11 @@ async function boostrap() {
   const configService = app.get(ConfigService)
 
   // set Express-specific configs
-  // @TODO
+  for (const [option, value] of Object.entries(configService.get('app'))) {
+    app.set(option, value)
+  }
 
-  app.useLogger(configService.get('app.logLevel'))
+  app.useLogger(configService.get('logger.logLevel'))
 
   await app.listen(configService.get('server.port'))
 }

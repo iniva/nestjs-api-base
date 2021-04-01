@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common'
-import { version } from '../../package.json'
+import { Controller, Get, Req } from '@nestjs/common'
+import { Request } from 'express'
 
 type HealthResponse = {
   message: string
@@ -9,10 +9,10 @@ type HealthResponse = {
 @Controller('health')
 export class HealthController {
   @Get()
-  get(): HealthResponse {
+  get(@Req() req: Request): HealthResponse {
     return {
       message: 'All good here, thanks for asking!',
-      version,
+      version: req.app.get('version'),
     }
   }
 }
