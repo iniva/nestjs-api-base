@@ -17,6 +17,8 @@ const configuration = (): Configuration => {
     },
     logger: {
       logLevel: process.env.LOG_LEVEL || 'log',
+      prettyPrint: false, //process.env.NODE_ENV !== 'production',
+      colorize: process.env.NODE_ENV !== 'production',
     },
   }
 }

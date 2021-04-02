@@ -1,6 +1,8 @@
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
+import * as helmet from 'helmet'
+
 import { AppModule } from './app.module'
 
 async function boostrap() {
@@ -13,6 +15,9 @@ async function boostrap() {
   }
 
   app.useLogger(configService.get('logger.logLevel'))
+
+  // Guard API against some harmful headers
+  app.use(helmet())
 
   await app.listen(configService.get('server.port'))
 }

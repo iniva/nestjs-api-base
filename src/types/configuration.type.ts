@@ -13,5 +13,7 @@ export type Configuration = {
   }
   logger: {
     logLevel: string
+    prettyPrint: boolean
+    colorize: boolean
   }
 }
