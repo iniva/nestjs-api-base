@@ -1,6 +1,10 @@
+import { IsString, MinLength } from 'class-validator'
+
 export class NewPostDto {
-  id: string
+  @IsString()
+  @MinLength(5)
   title: string
+
+  @IsString()
   content: string
-  created_at: Date
 }

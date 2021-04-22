@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
 
-import { TrackerMiddleware } from './common/middleware/tracker.middleware'
+import { TrackerMiddleware } from './common/tracker.middleware'
 import configuration from './config/configuration'
 import { HealthController } from './health/health.controller'
 import { PostsModule } from './posts/posts.module'
