@@ -1,0 +1,78 @@
+name: CI
+
+# This event is triggered on pushes & PRs to all branches
+on:
+  pull_request:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  prepare:
+    name: Preparing pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Cloning repository
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Getting cache for node_modules
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - uses: actions/setup-node@v2
+        name: Setting Node.js Version
+        with:
+          node-version: '12.x'
+
+      - name: Installing dependencies
+        run: yarn install --frozen-lockfile
+        continue-on-error: false
+
+  tests:
+    needs: prepare
+    strategy:
+      matrix:
+        # Creates jobs for each element in the matrix
+        test: ['unit', 'lint', 'cov']
+      # Let individual jobs in the matrix fail without canceling all jobs
+      fail-fast: false
+    name: ${{ matrix.test }} tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Cloning repository
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Getting cache for node_modules
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - uses: actions/setup-node@v2
+        name: Setting Node.js Version
+        with:
+          node-version: '12.x'
+
+      - name: Installing dependencies
+        run: yarn install --frozen-lockfile
+        continue-on-error: false
+
+      - name: Running ${{ matrix.test }} tests
+        run: yarn test:${{ matrix.test }}
+        continue-on-error: false
