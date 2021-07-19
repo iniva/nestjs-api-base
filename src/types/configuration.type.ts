@@ -1,3 +1,5 @@
+import { ValidationPipeOptions } from '@nestjs/common'
+
 export type Configuration = {
   environment: string
   server: {
@@ -16,4 +18,5 @@ export type Configuration = {
     prettyPrint: boolean
     colorize: boolean
   }
+  validation: ValidationPipeOptions
 }

@@ -68,7 +68,7 @@ export class PostsService {
     return post
   }
 
-  async save(newPost: NewPostDto): Promise<void> {
+  async save(newPost: NewPostDto): Promise<Post> {
     const post: Post = {
       id: uuid(),
       ...newPost,
@@ -76,5 +76,7 @@ export class PostsService {
     }
 
     this._posts.push(post)
+
+    return post
   }
 }
