@@ -1,3 +1,4 @@
+import { BadRequestFactory } from 'src/common/bad-request.factory'
 import { version } from '../../package.json'
 import { Configuration } from '../types/configuration.type'
 
@@ -19,6 +20,15 @@ const configuration = (): Configuration => {
       logLevel: process.env.LOG_LEVEL || 'log',
       prettyPrint: false, //process.env.NODE_ENV !== 'production',
       colorize: process.env.NODE_ENV !== 'production',
+    },
+    validation: {
+      whitelist: true,
+      forbidUnknownValues: true,
+      validationError: {
+        target: false,
+        value: false,
+      },
+      exceptionFactory: (errors) => BadRequestFactory.fromErrors(errors),
     },
   }
 }

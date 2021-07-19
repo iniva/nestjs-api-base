@@ -41,7 +41,11 @@ export class PostsController {
   }
 
   @Post()
-  async add(@Body() newPost: NewPostDto): Promise<void> {
-    this._postService.save(newPost)
+  async add(@Body() newPost: NewPostDto): Promise<Partial<PostType>> {
+    const post = await this._postService.save(newPost)
+
+    return {
+      id: post.id,
+    }
   }
 }

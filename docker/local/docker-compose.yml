@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  api_server:
+    ports:
+      - 8091:8091
+    networks:
+      - api-network
+    build:
+      context: ../../
+      dockerfile: ./docker/local/Dockerfile
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../src:/app/src
+      - ../../dist:/app/dist
+      - ../../tsconfig.json:/app/tsconfig.json
+      - ../../tsconfig.build.json:/app/tsconfig.build.json
+    command: ['yarn', 'start:dev']
+
+networks:
+  api-network:
+    driver: bridge

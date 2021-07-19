@@ -76,3 +76,16 @@ jobs:
       - name: Running ${{ matrix.test }} tests
         run: yarn test:${{ matrix.test }}
         continue-on-error: false
+
+  tests-integration:
+    needs: prepare
+    name: integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Cloning repository
+
+      - name: Running integration tests
+        run: |
+          cd docker/test-integration
+          bash run.sh
