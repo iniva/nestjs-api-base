@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  api_server:
+    build:
+      context: ../../
+      dockerfile: ./docker/prod/Dockerfile
+    env_file:
+      - .env.test
+    volumes:
+      - ../../tsconfig.json:/app/tsconfig.json
+      - ../../tsconfig.build.json:/app/tsconfig.build.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging:
+      driver: none
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: test
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    logging:
+      driver: none
+
+  tester:
+    build:
+      context: ../../
+      dockerfile: ./docker/test-integration/Dockerfile
+    env_file:
+      - .env.test
+    volumes:
+      - ../../test:/app/test
+      - ../../src:/app/src
+      - ../../dist:/app/dist
+      - ../../tsconfig.test-int.json:/app/tsconfig.json
+      - ../../jest.int-config.ts:/app/jest.int-config.ts
+    depends_on:
+      - api_server

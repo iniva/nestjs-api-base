@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  api_server:
+    ports:
+      - 8091:8091
+    networks:
+      - api-network
+    build:
+      context: ../../
+      dockerfile: ./docker/local/Dockerfile
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../src:/app/src
+      - ../../dist:/app/dist
+      - ../../tsconfig.json:/app/tsconfig.json
+      - ../../tsconfig.build.json:/app/tsconfig.build.json
+    command: ['yarn', 'start:dev']
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: develop
+    ports:
+      - 10432:5432
+    networks:
+      - api-network
+    volumes:
+      - ./data/db:/data/db
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    logging:
+      driver: none
+
+networks:
+  api-network:
+    driver: bridge
