@@ -8,4 +8,4 @@ COPY ./yarn.lock /app/yarn.lock
 
 RUN yarn install
 
-EXPOSE 8091
+EXPOSE $SERVER_PORT

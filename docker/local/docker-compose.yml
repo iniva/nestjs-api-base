@@ -15,7 +15,7 @@ services:
       - ../../dist:/app/dist
       - ../../tsconfig.json:/app/tsconfig.json
       - ../../tsconfig.build.json:/app/tsconfig.build.json
-    command: ['yarn', 'start:dev']
+    command: [ 'yarn', 'start:dev' ]
     depends_on:
       postgres:
         condition: service_healthy

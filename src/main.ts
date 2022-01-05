@@ -21,9 +21,9 @@ async function bootstrap() {
   // Guard API against some harmful headers
   app.use(helmet())
 
-  // Enable App level protection againgst incorrect data
+  // Enable App level protection against incorrect data
   app.useGlobalPipes(new ValidationPipe(configService.get('validation')))
 
-  await app.listen(3000)
+  await app.listen(configService.get('server.port'))
 }
 bootstrap()

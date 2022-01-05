@@ -8,4 +8,7 @@ export type User = {
   lastname: string | null
 }
 
-export type AuthedUser = Omit<User, 'password'>
+export type AuthedUser = Pick<
+  User,
+  'id' | 'username'
+>
