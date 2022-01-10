@@ -33,60 +33,60 @@ describe('AuthService', () => {
   })
 })
 
-describe('validateUser', () => {
-  let service: AuthService
+// describe('validateUser', () => {
+//   let service: AuthService
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        UsersModule,
-        PassportModule,
-        JwtModule.register({
-          secret: jwtConstants.secret,
-          signOptions: { expiresIn: '60s' }
-        })
-      ],
-      providers: [AuthService, LocalStrategy, JwtStrategy],
-    }).compile()
+//   beforeEach(async () => {
+//     const module: TestingModule = await Test.createTestingModule({
+//       imports: [
+//         UsersModule,
+//         PassportModule,
+//         JwtModule.register({
+//           secret: jwtConstants.secret,
+//           signOptions: { expiresIn: '60s' }
+//         })
+//       ],
+//       providers: [AuthService, LocalStrategy, JwtStrategy],
+//     }).compile()
 
-    service = module.get<AuthService>(AuthService)
-  })
+//     service = module.get<AuthService>(AuthService)
+//   })
 
-  it('shoudl return a user object when credentials are valid', async () => {
-    const result = await service.validateUser('maria', 'guess')
+//   it('should return a user object when credentials are valid', async () => {
+//     const result = await service.validateUser('maria', 'guess')
 
-    expect(result).not.toBeNull()
-  })
+//     expect(result).not.toBeNull()
+//   })
 
-  it('shoudl return null when credentials are invalid', async () => {
-    const result = await service.validateUser('maria', 'noguess')
+//   it('shoudl return null when credentials are invalid', async () => {
+//     const result = await service.validateUser('maria', 'noguess')
 
-    expect(result).toBeNull()
-  })
-})
+//     expect(result).toBeNull()
+//   })
+// })
 
-describe('validateLogin', () => {
-  let service: AuthService
+// describe('validateLogin', () => {
+//   let service: AuthService
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        UsersModule,
-        PassportModule,
-        JwtModule.register({
-          secret: jwtConstants.secret,
-          signOptions: { expiresIn: '60s' }
-        })
-      ],
-      providers: [AuthService, LocalStrategy, JwtStrategy],
-    }).compile()
+//   beforeEach(async () => {
+//     const module: TestingModule = await Test.createTestingModule({
+//       imports: [
+//         UsersModule,
+//         PassportModule,
+//         JwtModule.register({
+//           secret: jwtConstants.secret,
+//           signOptions: { expiresIn: '60s' }
+//         })
+//       ],
+//       providers: [AuthService, LocalStrategy, JwtStrategy],
+//     }).compile()
 
-    service = module.get<AuthService>(AuthService)
-  })
+//     service = module.get<AuthService>(AuthService)
+//   })
 
-  it('should return a JWT when credentials are valid', async () => {
-    const result = await service.login({ id: 3, username: 'maria' })
+//   it('should return a JWT when credentials are valid', async () => {
+//     const result = await service.login({ id: 3, username: 'maria' })
 
-    expect(result.access_token).toBeDefined()
-  })
-})
+//     expect(result.access_token).toBeDefined()
+//   })
+// })

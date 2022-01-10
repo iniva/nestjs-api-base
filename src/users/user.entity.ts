@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, PrimaryColumn, Unique } from 'typeorm'
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -8,11 +8,8 @@ export class UserEntity {
   @Column()
   password: string
 
-  @Column()
+  @Column({ unique: true })
   email: string
-
-  @Column()
-  username: string
 
   @Column({ nullable: true })
   firstname: string

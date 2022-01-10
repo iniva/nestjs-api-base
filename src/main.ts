@@ -16,6 +16,7 @@ async function bootstrap() {
     app.set(option, value)
   }
 
+  // Add censor options to Logger to hide sensitive data
   app.useLogger(app.get(Logger))
 
   // Guard API against some harmful headers

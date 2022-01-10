@@ -18,8 +18,8 @@ export class UsersService {
     return users.map((user) => this.hydrate(user))
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ username })
+  async findOne(email: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ email })
 
     if (!user) {
       return undefined
@@ -37,7 +37,6 @@ export class UsersService {
       id: entity.id,
       password: entity.password,
       email: entity.email,
-      username: entity.username,
       active: entity.active,
       firstname: entity.firstname,
       lastname: entity.lastname
@@ -49,7 +48,6 @@ export class UsersService {
       id: user.id,
       password: user.password,
       email: user.email,
-      username: user.username,
       active: user.active,
       firstname: user.firstname || null,
       lastname: user.lastname || null
