@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { Logger } from 'nestjs-pino'
-import * as helmet from 'helmet'
+import helmet from 'helmet'
 
 import { AppModule } from './app.module'
 
