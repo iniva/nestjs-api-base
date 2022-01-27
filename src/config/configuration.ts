@@ -36,7 +36,7 @@ const configuration = (): Configuration => {
       password: process.env.DB_PASSWORD || 'dev',
       name: process.env.DB_NAME || 'develop',
       logging: false,
-      synchronize: process.env.NODE_ENV === 'development'
+      synchronize: process.env.NODE_ENV !== 'production'
     }
   }
 }

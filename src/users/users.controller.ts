@@ -47,7 +47,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req): Promise<Partial<User>> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, active, id, ...publicUser } = await this.usersService.findOne(req.user.email)
 
     return publicUser
@@ -55,7 +54,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  async update(@Request() req, @Body() dto: UpdateUserDto) {
+  async update(@Request() req, @Body() dto: UpdateUserDto): Promise<void> {
     const user = await this.usersService.findOne(req.user.email)
     const updatedUser: User = {
       ...user,

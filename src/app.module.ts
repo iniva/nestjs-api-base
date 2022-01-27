@@ -1,14 +1,15 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { HealthController } from './health/health.controller'
 import { AuthModule } from './auth/auth.module'
 import { TrackerMiddleware } from './common/tracker.middleware'
 import { UsersModule } from './users/users.module'
 import configuration from './config/configuration'
-import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
   imports: [
@@ -21,7 +22,13 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       useFactory: (config: ConfigService) => ({
         pinoHttp: {
           // name: config.get('app.name'),
-          level: config.get('logger.logLevel')
+          level: config.get('logger.logLevel'),
+          redact: {
+            paths: [
+              'req.headers.authorization'
+            ],
+            censor: '[redacted]'
+          }
         },
       }),
     }),
@@ -43,7 +50,10 @@ import { TypeOrmModule } from '@nestjs/typeorm'
     AuthModule,
     UsersModule
   ],
-  controllers: [AppController],
+  controllers: [
+    AppController,
+    HealthController
+  ],
   providers: [AppService],
 })
 export class AppModule {
