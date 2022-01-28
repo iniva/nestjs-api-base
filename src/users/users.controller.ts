@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common'
 import { v4 as uuid } from 'uuid'
 
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
-import { User } from 'src/typings/user.type'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { User } from '../typings/user.type'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 import { UpdateUserDto } from './dto/update-user.dto'
