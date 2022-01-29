@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         # Creates jobs for each element in the matrix
-        test: ['lint']
+        test: ['unit', lint']
       # Let individual jobs in the matrix fail without canceling all jobs
       fail-fast: false
     name: ${{ matrix.test }} tests
