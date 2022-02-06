@@ -9,6 +9,7 @@ import { HealthController } from './health/health.controller'
 import { AuthModule } from './auth/auth.module'
 import { TrackerMiddleware } from './common/tracker.middleware'
 import { UsersModule } from './users/users.module'
+import { HashManager } from './hash.manager'
 import configuration from './config/configuration'
 
 @Module({
@@ -54,7 +55,7 @@ import configuration from './config/configuration'
     AppController,
     HealthController
   ],
-  providers: [AppService],
+  providers: [AppService, HashManager],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

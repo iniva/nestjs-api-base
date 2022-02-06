@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
+import { HashManager } from '../hash.manager'
 
 describe('UsersController', () => {
   let usersController: UsersController
@@ -10,7 +11,6 @@ describe('UsersController', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
-        UsersService,
         {
           provide: UsersService,
           useValue: {
@@ -19,6 +19,7 @@ describe('UsersController', () => {
             save: jest.fn(),
           },
         },
+        HashManager
       ],
     }).compile()
 

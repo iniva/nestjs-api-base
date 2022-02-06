@@ -16,17 +16,21 @@ import { User } from '../typings/user.type'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { HashManager } from '../hash.manager'
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private hashManager: HashManager
+  ) { }
 
   @Post()
   async create(@Body() dto: CreateUserDto) {
     const user: User = {
       id: uuid(),
       email: dto.email,
-      password: dto.password, // <- encrypt this
+      password: await this.hashManager.createHash(dto.password),
       active: true,
       firstname: null,
       lastname: null
@@ -56,6 +60,11 @@ export class UsersController {
   @Put()
   async update(@Request() req, @Body() dto: UpdateUserDto): Promise<void> {
     const user = await this.usersService.findOne(req.user.email)
+
+    if (dto.password) {
+      dto.password = await this.hashManager.createHash(dto.password)
+    }
+
     const updatedUser: User = {
       ...user,
       ...dto
