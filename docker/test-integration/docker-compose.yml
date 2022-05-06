@@ -22,7 +22,7 @@ services:
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: test
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: [ "CMD", "pg_isready", "-U", "dev", "-d", "test" ]
       interval: 1s
       timeout: 3s
       retries: 30
