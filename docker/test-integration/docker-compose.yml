@@ -3,7 +3,7 @@ services:
   api_server:
     build:
       context: ../../
-      dockerfile: ./docker/prod/Dockerfile
+      dockerfile: ./docker/live/Dockerfile
     env_file:
       - .env.test
     volumes:
