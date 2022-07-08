@@ -1,0 +1,72 @@
+name: Dependabot Updates
+
+# This event is triggered on pushes to main
+on:
+  push:
+    branches:
+      - 'main'
+
+env:
+  DEPENDABOT_BRANCH: dependabot-updates
+
+jobs:
+  decision:
+    name: Decide how to proceed
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.verification.outputs.action }}
+    env:
+      REPOSITORY: ${{ github.repository }}
+    steps:
+      - name: Verifying if dependabot branch exist
+        id: verification
+        run: |
+          FOUND=$(git ls-remote https://github.com/${REPOSITORY} --heads origin ${DEPENDABOT_BRANCH})
+
+          if [[ -z ${FOUND} ]]; then
+            echo "::set-output name=action::create"
+          else
+            echo "::set-output name=action::update"
+          fi
+
+  create:
+    needs: decision
+    if: ${{ needs.decision.outputs.action == 'create' }}
+    name: Create branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Cloning "main" branch
+        with:
+          ref: 'main'
+
+      - name: Creating branch
+        run: |
+          echo "Creating '${DEPENDABOT_BRANCH}' branch"
+          git checkout -b ${DEPENDABOT_BRANCH}
+
+          echo "Pushing '${DEPENDABOT_BRANCH}' branch"
+          git push origin ${DEPENDABOT_BRANCH}
+
+  update:
+    needs: decision
+    if: ${{ needs.decision.outputs.action == 'update' }}
+    name: Update branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Cloning all branches for this repository
+        with:
+          fetch-depth: 0
+
+      - name: Updating branch
+        run: |
+          echo "Switching to '${DEPENDABOT_BRANCH}' branch"
+          git checkout ${DEPENDABOT_BRANCH}
+
+          echo "Merging latest changes from 'main'"
+          git pull origin main
+
+          echo "Pushing to '${DEPENDABOT_BRANCH}' branch"
+          git push origin ${DEPENDABOT_BRANCH}
+
