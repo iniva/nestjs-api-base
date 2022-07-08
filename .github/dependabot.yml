@@ -1,0 +1,26 @@
+# Documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "dependabot-updates"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      timezone: "Europe/Berlin"
+      time: "09:00"
+    assignees:
+      - "iniva"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dependabot-updates"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      timezone: "Europe/Berlin"
+      time: "09:00"
+    assignees:
+      - "iniva"
