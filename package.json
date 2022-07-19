@@ -63,7 +63,7 @@
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
+    "@typescript-eslint/parser": "^5.30.7",
     "axios": "^0.27.2",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
@@ -74,7 +74,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^27.1.4",
     "ts-loader": "^9.3.0",
-    "ts-node": "^10.8.0",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.4"
   },
