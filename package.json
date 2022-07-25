@@ -50,7 +50,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.1.0",
+    "@faker-js/faker": "^7.3.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^8.0.11",
     "@nestjs/testing": "^8.4.5",
@@ -63,7 +63,7 @@
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
+    "@typescript-eslint/parser": "^5.30.7",
     "axios": "^0.27.2",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
@@ -71,7 +71,7 @@
     "husky": "^8.0.1",
     "jest": "^27.5.0",
     "standard-version": "^9.5.0",
-    "supertest": "^6.2.3",
+    "supertest": "^6.2.4",
     "ts-jest": "^27.1.4",
     "ts-loader": "^9.3.0",
     "ts-node": "^10.9.1",
