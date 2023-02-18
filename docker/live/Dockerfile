@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:14 as builder
+FROM node:16 as builder
 
 ENV HOME /app
 WORKDIR /app
@@ -18,7 +18,7 @@ RUN rm -rf ./node_modules && \
   yarn install --production
 
 # Release stage
-FROM node:14-alpine
+FROM node:16-alpine
 ENV NODE_ENV=production
 ENV HOME /app
 WORKDIR /app
