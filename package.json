@@ -20,6 +20,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:integration": "jest --config=jest.int-config.ts",
+    "test:typecheck": "tsc --noEmit",
     "prepare": "husky install",
     "release": "SKIP_PREPARE_COMMIT=true standard-version",
     "release:dry": "SKIP_PREPARE_COMMIT=true standard-version --dry-run",
@@ -33,7 +34,7 @@
     "@nestjs/mapped-types": "1.2.2",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.3.9",
-    "@nestjs/typeorm": "^8.0.4",
+    "@nestjs/typeorm": "^9.0.1",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -46,7 +47,7 @@
     "pino-http": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "typeorm": "^0.2.41",
+    "typeorm": "^0.3.12",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
