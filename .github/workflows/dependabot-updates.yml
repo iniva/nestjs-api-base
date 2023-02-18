@@ -24,9 +24,9 @@ jobs:
           FOUND=$(git ls-remote https://github.com/${REPOSITORY} --heads origin ${DEPENDABOT_BRANCH})
 
           if [[ -z ${FOUND} ]]; then
-            echo "::set-output name=action::create"
+            echo "action=create" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=action::update"
+            echo "action=update" >> $GITHUB_OUTPUT
           fi
 
   create:
