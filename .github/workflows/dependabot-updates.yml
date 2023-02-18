@@ -64,6 +64,9 @@ jobs:
           echo "Switching to '${DEPENDABOT_BRANCH}' branch"
           git checkout ${DEPENDABOT_BRANCH}
 
+          # Setting merge strategy
+          git config pull.rebase false
+
           echo "Merging latest changes from 'main'"
           git pull origin main
 
