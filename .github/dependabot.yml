@@ -7,7 +7,7 @@ updates:
     directory: "/"
     target-branch: "dependabot-updates"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "sunday"
       timezone: "Europe/Berlin"
       time: "09:00"
@@ -18,7 +18,7 @@ updates:
     directory: "/"
     target-branch: "dependabot-updates"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "sunday"
       timezone: "Europe/Berlin"
       time: "09:00"
