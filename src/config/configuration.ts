@@ -1,6 +1,6 @@
-import { Configuration } from '../typings/configuration.type'
+import { Configuration } from './configuration.type'
 import { BadRequestFactory } from '../common/bad-request.factory'
-import { version } from '../../package.json'
+import { description, version } from '../../package.json'
 
 const configuration = (): Configuration => {
   return {
@@ -15,6 +15,11 @@ const configuration = (): Configuration => {
       'case sensitive routing': true,
       'strict routing': false,
       'x-powered-by': false,
+    },
+    documentation: {
+      name: process.env.APP_NAME,
+      description,
+      version,
     },
     logger: {
       logLevel: process.env.LOG_LEVEL || 'log',

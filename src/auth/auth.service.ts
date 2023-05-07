@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { AuthedUser } from '../typings/user.type'
+import { AuthedUser } from '../users/user.type'
 import { UsersService } from '../users/users.service'
 import { HashManager } from '../hash.manager'
 

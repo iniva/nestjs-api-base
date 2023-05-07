@@ -1,8 +1,11 @@
+import { writeFileSync } from 'fs'
+import { resolve } from 'path'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { Logger } from 'nestjs-pino'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import helmet from 'helmet'
 
 import { AppModule } from './app.module'
@@ -24,6 +27,21 @@ async function bootstrap() {
 
   // Enable App level protection against incorrect data
   app.useGlobalPipes(new ValidationPipe(configService.get('validation')))
+
+  // OpenAPI docs
+  const documentationConfig = configService.get('documentation')
+  const config = new DocumentBuilder()
+    .setTitle(documentationConfig.name)
+    .setDescription(documentationConfig.description)
+    .setVersion(documentationConfig.version)
+    .build()
+  const document = SwaggerModule.createDocument(app, config)
+
+  SwaggerModule.setup('api-docs', app, document, {
+    customSiteTitle: documentationConfig.name
+  })
+
+  writeFileSync(resolve('client/api-docs.json'), JSON.stringify(document, null, 2), { encoding: 'utf-8' })
 
   await app.listen(configService.get('server.port'))
 }

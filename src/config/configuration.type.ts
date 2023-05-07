@@ -16,6 +16,12 @@ export type Configuration = {
     'x-powered-by': boolean
   }
 
+  documentation: {
+    name: string
+    description: string
+    version: string
+  }
+
   logger: {
     logLevel: string
   }

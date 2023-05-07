@@ -12,6 +12,7 @@ RUN yarn install --frozen-lockfile
 COPY ./tsconfig.json /app/tsconfig.json
 COPY ./tsconfig.build.json /app/tsconfig.build.json
 COPY ./src /app/src
+COPY ./client /app/client
 
 RUN yarn build
 RUN rm -rf ./node_modules && \
@@ -24,6 +25,7 @@ ENV HOME /app
 WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/client /app/dist/client
 COPY --from=builder /app/tsconfig.json /app
 COPY --from=builder /app/package.json /app
 COPY --from=builder /app/node_modules /app/node_modules

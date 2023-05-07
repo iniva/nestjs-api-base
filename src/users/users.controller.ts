@@ -12,7 +12,7 @@ import {
 import { v4 as uuid } from 'uuid'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
-import { User } from '../typings/user.type'
+import { User } from './user.type'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 import { UpdateUserDto } from './dto/update-user.dto'
