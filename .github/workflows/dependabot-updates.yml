@@ -8,6 +8,8 @@ on:
 
 env:
   DEPENDABOT_BRANCH: dependabot-updates
+  AUTHOR_NAME: ${{ github.event.pusher.name }}
+  AUTHOR_EMAIL: ${{ github.event.pusher.email }}
 
 jobs:
   decision:
@@ -61,6 +63,9 @@ jobs:
 
       - name: Updating branch
         run: |
+          git config --global user.email "${{ env.AUTHOR_EMAIL }}"
+          git config --global user.name  "${{ env.AUTHOR_NAME }}"
+
           echo "Switching to '${DEPENDABOT_BRANCH}' branch"
           git checkout ${DEPENDABOT_BRANCH}
 
