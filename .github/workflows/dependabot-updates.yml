@@ -70,6 +70,7 @@ jobs:
       - name: creating PR
         env:
           NEW_BRANCH: ${{ env.DEPENDABOT_BRANCH }}-${{ env.WF_RUN_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config --global user.email "${{ env.AUTHOR_EMAIL }}"
           git config --global user.name  "${{ env.AUTHOR_NAME }}"
