@@ -65,6 +65,7 @@ jobs:
         run: |
           git config --global user.email "${{ env.AUTHOR_EMAIL }}"
           git config --global user.name  "${{ env.AUTHOR_NAME }}"
+          git config pull.rebase false
 
           echo "Switching to '${DEPENDABOT_BRANCH}' branch"
           git checkout ${DEPENDABOT_BRANCH}
