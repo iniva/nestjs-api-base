@@ -6,8 +6,14 @@ on:
     branches:
       - 'main'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   DEPENDABOT_BRANCH: dependabot-updates
+  WF_RUN_ID: ${{ github.run_id }}
+  GH_WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
   AUTHOR_NAME: ${{ github.event.pusher.name }}
   AUTHOR_EMAIL: ${{ github.event.pusher.email }}
 
@@ -26,14 +32,14 @@ jobs:
           FOUND=$(git ls-remote https://github.com/${REPOSITORY} --heads origin ${DEPENDABOT_BRANCH})
 
           if [[ -z ${FOUND} ]]; then
-            echo "action=create" >> $GITHUB_OUTPUT
+            echo "action=create-branch" >> $GITHUB_OUTPUT
           else
-            echo "action=update" >> $GITHUB_OUTPUT
+            echo "action=create-pr" >> $GITHUB_OUTPUT
           fi
 
-  create:
+  create-branch:
     needs: decision
-    if: ${{ needs.decision.outputs.action == 'create' }}
+    if: ${{ needs.decision.outputs.action == 'create-branch' }}
     name: Create branch
     runs-on: ubuntu-latest
     steps:
@@ -44,35 +50,42 @@ jobs:
 
       - name: Creating branch
         run: |
-          echo "Creating '${DEPENDABOT_BRANCH}' branch"
-          git checkout -b ${DEPENDABOT_BRANCH}
+          echo "Creating '${{ env.DEPENDABOT_BRANCH }}' branch"
+          git checkout -b ${{ env.DEPENDABOT_BRANCH }}
 
-          echo "Pushing '${DEPENDABOT_BRANCH}' branch"
-          git push origin ${DEPENDABOT_BRANCH}
+          echo "Pushing '${{ env.DEPENDABOT_BRANCH }}' branch"
+          git push origin ${{ env.DEPENDABOT_BRANCH }}
 
-  update:
+  create-pr:
     needs: decision
-    if: ${{ needs.decision.outputs.action == 'update' }}
-    name: Update branch
+    if: ${{ needs.decision.outputs.action == 'create-pr' }}
+    name: Create PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        name: Cloning all branches for this repository
+        name: Cloning "main" branch
         with:
-          fetch-depth: 0
+          ref: 'main'
 
-      - name: Updating branch
+      - name: creating PR
+        env:
+          NEW_BRANCH: ${{ env.DEPENDABOT_BRANCH }}-${{ env.WF_RUN_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config --global user.email "${{ env.AUTHOR_EMAIL }}"
           git config --global user.name  "${{ env.AUTHOR_NAME }}"
-          git config pull.rebase false
 
-          echo "Switching to '${DEPENDABOT_BRANCH}' branch"
-          git checkout ${DEPENDABOT_BRANCH}
+          echo "Creating branch '${{ env.NEW_BRANCH }}'"
+          git checkout -b ${{ env.NEW_BRANCH }}
 
-          echo "Merging latest changes from 'main'"
-          git pull origin main
+          echo "Pushing new branch"
+          git push origin ${{ env.NEW_BRANCH }}
 
-          echo "Pushing to '${DEPENDABOT_BRANCH}' branch"
-          git push origin ${DEPENDABOT_BRANCH}
+          echo "Creating PR"
+          GENERATED_AT=$(date '+%Y%m%d')
+          PR_TITLE="Update ${{ env.DEPENDABOT_BRANCH }} - ${GENERATED_AT}"
+          PR_BODY="
+          :gift: auto-generated PR created by [this workflow](${GH_WORKFLOW_URL})
+          "
 
+          gh pr create --title "${PR_TITLE}" --body "${PR_BODY}" --base ${{ env.DEPENDABOT_BRANCH }} --head ${{ env.NEW_BRANCH }}
