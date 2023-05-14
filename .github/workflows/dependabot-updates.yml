@@ -67,7 +67,7 @@ jobs:
         with:
           ref: 'main'
 
-      - name: creating PR
+      - name: Creating PR
         env:
           NEW_BRANCH: ${{ env.DEPENDABOT_BRANCH }}-${{ env.WF_RUN_ID }}
           GH_TOKEN: ${{ github.token }}

@@ -37,11 +37,11 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app, config)
 
+  writeFileSync(resolve('client/api-docs.json'), JSON.stringify(document, null, 2), { encoding: 'utf-8' })
+
   SwaggerModule.setup('api-docs', app, document, {
     customSiteTitle: documentationConfig.name
   })
-
-  writeFileSync(resolve('client/api-docs.json'), JSON.stringify(document, null, 2), { encoding: 'utf-8' })
 
   await app.listen(configService.get('server.port'))
 }
