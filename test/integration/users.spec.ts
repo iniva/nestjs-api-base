@@ -15,7 +15,7 @@ describe('users', () => {
   it('should create a user when using valid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     const response = await api.post('/users', userData)
@@ -34,7 +34,7 @@ describe('users', () => {
   it('should return logged in user profile', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
@@ -58,7 +58,7 @@ describe('users', () => {
   it('should fail when trying to update user without being logged in', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
@@ -74,7 +74,7 @@ describe('users', () => {
   it('should fail when trying to update user with invalid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
@@ -100,7 +100,7 @@ describe('users', () => {
   it('should update the logged in user when using valid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
@@ -111,8 +111,8 @@ describe('users', () => {
     })
 
     const updateData = {
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName()
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName()
     }
     const updateResponse = await api.put('/users', updateData, {
       headers: {
