@@ -1,7 +1,8 @@
 # Builder stage
-FROM node:16 as builder
+FROM node:18 as builder
 
 ENV HOME /app
+ENV HUSKY 0
 WORKDIR /app
 
 COPY ./package.json /app/package.json
@@ -19,12 +20,13 @@ RUN rm -rf ./node_modules && \
   yarn install --production
 
 # Release stage
-FROM node:16-alpine
+FROM node:18-alpine
 ENV NODE_ENV=production
 ENV HOME /app
 WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/client /app/client
 COPY --from=builder /app/client /app/dist/client
 COPY --from=builder /app/tsconfig.json /app
 COPY --from=builder /app/package.json /app
