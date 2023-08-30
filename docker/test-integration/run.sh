@@ -1,14 +1,12 @@
 #!/bin/bash
+DOCKER_COMPOSE_FILE=$PWD/docker/test-integration/docker-compose.yml
 
-DOCKER_BUILDKIT=1 docker compose -p nestjs-api build
-DOCKER_BUILDKIT=1 docker compose -p nestjs-api up --force-recreate --renew-anon-volumes --abort-on-container-exit && \
+DOCKER_BUILDKIT=1 docker compose -f $DOCKER_COMPOSE_FILE -p nestjs-api build
+DOCKER_BUILDKIT=1 docker compose -f $DOCKER_COMPOSE_FILE -p nestjs-api up --force-recreate --renew-anon-volumes --abort-on-container-exit
 
-CODE=0
-docker compose -p nestjs-api ps -q | xargs docker inspect -f '{{ .State.ExitCode }}' | while read code; do
-    if [ "$code" == "1" ]; then
-       CODE=-1
-    fi
-done
-docker compose -p nestjs-api down -v
+# Detect exit code of the "tester" service in docker-compose
+CODE=$(docker inspect $(docker ps -a | grep nestjs-api-tester | awk '{print $1}') | jq '.[0].State.ExitCode')
+
+docker compose -f $DOCKER_COMPOSE_FILE -p nestjs-api down -v
+
 exit $CODE
-
