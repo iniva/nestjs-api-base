@@ -91,5 +91,4 @@ jobs:
 
       - name: Running integration tests
         run: |
-          cd docker/test-integration
-          bash run.sh
+          bash docker/test-integration/run.sh
