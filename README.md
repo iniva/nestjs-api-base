@@ -24,7 +24,7 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 - Duplicate `.env.example` and rename it to `.env`. Update variables as you need.
 - Run the `run.sh` script from inside `docker/local` folder. This will build & start the API container (alongside with the database container)
   ```sh
-  cd docker/local && bash run.sh
+  bash docker/local/run.sh
   ```
 - By default, the API is listening on port `8091`. You can change this in the `.env` file.
 
@@ -36,5 +36,5 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
   ```
 - **Integration**
   ```sh
-  cd docker/test-integration && bash run.sh
+  bash docker/test-integration/run.sh
   ```

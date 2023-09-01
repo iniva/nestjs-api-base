@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/iniva/nestjs-api-base/compare/v1.1.0...v1.2.0) (2023-06-17)
+
+
+### Features
+
+* add api docs ([48641d6](https://github.com/iniva/nestjs-api-base/commit/48641d67a6da35f4df8a316e431fa6ad3e493e42))
+
 ## 1.1.0 (2023-02-18)
 
 

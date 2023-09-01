@@ -11,6 +11,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "npm", "run", "healthcheck"]
+      interval: 5s
+      timeout: 30s
+      retries: 3
     logging:
       driver: none
 
@@ -41,4 +46,5 @@ services:
       - ../../tsconfig.test-int.json:/app/tsconfig.json
       - ../../jest.int-config.ts:/app/jest.int-config.ts
     depends_on:
-      - api_server
+      api_server:
+        condition: service_healthy

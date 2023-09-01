@@ -6,7 +6,7 @@ describe('auth', () => {
   it('should fail when using invalid credentials', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
@@ -24,7 +24,7 @@ describe('auth', () => {
   it('should return an access token', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.random.alphaNumeric(8)
+      password: faker.string.alphanumeric(8)
     }
 
     await api.post('/users', userData)
