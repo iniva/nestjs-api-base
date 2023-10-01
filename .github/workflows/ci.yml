@@ -16,7 +16,7 @@ jobs:
     name: Preparing pipeline
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Get yarn cache directory path
@@ -52,7 +52,7 @@ jobs:
     name: ${{ matrix.test }} tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Get yarn cache directory path
@@ -86,7 +86,7 @@ jobs:
     name: integration tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Running integration tests
