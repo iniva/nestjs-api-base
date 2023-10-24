@@ -42,7 +42,6 @@ services:
     volumes:
       - ../../test:/app/test
       - ../../src:/app/src
-      - ../../dist:/app/dist
       - ../../tsconfig.test-int.json:/app/tsconfig.json
       - ../../jest.int-config.ts:/app/jest.int-config.ts
     depends_on:

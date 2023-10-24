@@ -8,7 +8,8 @@ const config: Config.InitialOptions = {
     '^.+.ts$': 'ts-jest',
   },
   testEnvironment: 'node',
-  verbose: true
+  verbose: true,
+  reporters: [['default', { summaryThreshold: 1 }]],
 }
 
 export default config
