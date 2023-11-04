@@ -8,4 +8,4 @@ COPY ./package-lock.json /app/package-lock.json
 
 RUN npm i
 
-CMD [ "npm", "run", "test:integration" ]
+CMD [ "npm", "run", "test:integration:debug" ]
