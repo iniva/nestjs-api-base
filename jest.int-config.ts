@@ -9,6 +9,9 @@ const config: Config.InitialOptions = {
   },
   testEnvironment: 'node',
   verbose: true,
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/../../src/$1',
+  },
   reporters: [['default', { summaryThreshold: 1 }]],
 }
 

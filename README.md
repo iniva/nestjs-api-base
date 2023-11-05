@@ -30,9 +30,9 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 
 # Running Tests
 - **Unit**
-  > run `yarn` or `yarn install` if you haven't already
+  > run `npm i` if you haven't already
   ```sh
-  yarn test:unit
+  npm run test:unit
   ```
 - **Integration**
   ```sh

@@ -42,8 +42,9 @@ services:
     volumes:
       - ../../test:/app/test
       - ../../src:/app/src
-      - ../../tsconfig.test-int.json:/app/tsconfig.json
+      - ../../tsconfig.json:/app/tsconfig.json
       - ../../jest.int-config.ts:/app/jest.int-config.ts
     depends_on:
       api_server:
-        condition: service_healthy
+        condition:
+          service_healthy

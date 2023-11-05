@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import api from './helpers/api'
+import { apiClient } from './helpers/api'
 
 describe('auth', () => {
   it('should fail when using invalid credentials', async () => {
@@ -9,10 +9,10 @@ describe('auth', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
     try {
-      await api.post('/auth/login', {
+      await apiClient.post('/auth/login', {
         email: faker.internet.email(),
         password: userData.password
       })
@@ -27,9 +27,9 @@ describe('auth', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
-    const authResponse = await api.post('/auth/login', {
+    const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
       password: userData.password
     })
