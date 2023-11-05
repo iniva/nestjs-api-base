@@ -1,7 +1,5 @@
-import { join } from 'path'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { ServeStaticModule } from '@nestjs/serve-static'
 import { LoggerModule } from 'nestjs-pino'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
@@ -18,10 +16,6 @@ import configuration from './config/configuration'
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
-      renderPath: '/docs'
     }),
     LoggerModule.forRootAsync({
       providers: [ConfigService],

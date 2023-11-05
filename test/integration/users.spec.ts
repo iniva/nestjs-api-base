@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker'
 
-import api from './helpers/api'
+import { apiClient } from './helpers/api'
 
 describe('users', () => {
   it('should fail when trying to create a user with invalid data', async () => {
     try {
-      await api.post('/users', {})
+      await apiClient.post('/users', {})
     } catch (error) {
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toHaveProperty('error')
@@ -18,14 +18,14 @@ describe('users', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    const response = await api.post('/users', userData)
+    const response = await apiClient.post('/users', userData)
 
     expect(response.status).toEqual(201)
   })
 
   it('should fail when trying to fetch profile without being logged in', async () => {
     try {
-      await api.get('/users/profile')
+      await apiClient.get('/users/profile')
     } catch (error) {
       expect(error.response.status).toEqual(401)
     }
@@ -37,14 +37,14 @@ describe('users', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
-    const authResponse = await api.post('/auth/login', {
+    const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
       password: userData.password
     })
 
-    const profileResponse = await api.get('/users/profile', {
+    const profileResponse = await apiClient.get('/users/profile', {
       headers: {
         Authorization: `Bearer ${authResponse.data.access_token}`
       }
@@ -61,11 +61,11 @@ describe('users', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
     const emptyData = {}
     try {
-      await api.put('/users', emptyData)
+      await apiClient.put('/users', emptyData)
     } catch (error) {
       expect(error.response.status).toEqual(401)
     }
@@ -77,16 +77,16 @@ describe('users', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
-    const authResponse = await api.post('/auth/login', {
+    const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
       password: userData.password
     })
 
     const emptyData = {}
     try {
-      await api.put('/users', emptyData, {
+      await apiClient.put('/users', emptyData, {
         headers: {
           Authorization: `Bearer ${authResponse.data.access_token}`
         }
@@ -103,9 +103,9 @@ describe('users', () => {
       password: faker.string.alphanumeric(8)
     }
 
-    await api.post('/users', userData)
+    await apiClient.post('/users', userData)
 
-    const authResponse = await api.post('/auth/login', {
+    const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
       password: userData.password
     })
@@ -114,7 +114,7 @@ describe('users', () => {
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName()
     }
-    const updateResponse = await api.put('/users', updateData, {
+    const updateResponse = await apiClient.put('/users', updateData, {
       headers: {
         Authorization: `Bearer ${authResponse.data.access_token}`
       }
@@ -122,7 +122,7 @@ describe('users', () => {
 
     expect(updateResponse.status).toEqual(200)
 
-    const profileResponse = await api.get('/users/profile', {
+    const profileResponse = await apiClient.get('/users/profile', {
       headers: {
         Authorization: `Bearer ${authResponse.data.access_token}`
       }

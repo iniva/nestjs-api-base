@@ -6,18 +6,24 @@ ENV HUSKY 0
 WORKDIR /app
 
 COPY ./package.json /app/package.json
-COPY ./yarn.lock /app/yarn.lock
+COPY ./package-lock.json /app/package-lock.json
 
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 COPY ./tsconfig.json /app/tsconfig.json
 COPY ./tsconfig.build.json /app/tsconfig.build.json
 COPY ./src /app/src
-COPY ./client /app/client
+# uncomment when using migrations
+# COPY ./migrations /app/migrations
 
-RUN yarn build
-RUN rm -rf ./node_modules && \
-  yarn install --production
+RUN npm run build
+# -------
+# Below commands are commented because they cause an issue with
+# a dependency that requires node-gyp
+# -------
+# RUN rm -rf ./node_modules && \
+#   npm i --omit=dev --ignore-scripts
+# -------
 
 # Release stage
 FROM node:18-alpine
@@ -26,10 +32,8 @@ ENV HOME /app
 WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/client /app/client
-COPY --from=builder /app/client /app/dist/client
 COPY --from=builder /app/tsconfig.json /app
 COPY --from=builder /app/package.json /app
 COPY --from=builder /app/node_modules /app/node_modules
 
-CMD [ "yarn", "start:prod" ]
+CMD [ "npm", "run", "start:prod" ]

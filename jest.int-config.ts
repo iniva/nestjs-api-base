@@ -8,7 +8,11 @@ const config: Config.InitialOptions = {
     '^.+.ts$': 'ts-jest',
   },
   testEnvironment: 'node',
-  verbose: true
+  verbose: true,
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/../../src/$1',
+  },
+  reporters: [['default', { summaryThreshold: 1 }]],
 }
 
 export default config

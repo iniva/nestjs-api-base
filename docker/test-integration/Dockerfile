@@ -4,8 +4,8 @@ ENV HOME /app
 WORKDIR /app
 
 COPY ./package.json /app/package.json
-COPY ./yarn.lock /app/yarn.lock
+COPY ./package-lock.json /app/package-lock.json
 
-RUN yarn install
+RUN npm i
 
-CMD ["yarn", "test:integration"]
+CMD [ "npm", "run", "test:integration:debug" ]
