@@ -1,5 +1,3 @@
-import { writeFileSync } from 'fs'
-import { resolve } from 'path'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
@@ -36,8 +34,6 @@ async function bootstrap() {
     .setVersion(documentationConfig.version)
     .build()
   const document = SwaggerModule.createDocument(app, config)
-
-  writeFileSync(resolve('client/api-docs.json'), JSON.stringify(document, null, 2), { encoding: 'utf-8' })
 
   SwaggerModule.setup('api-docs', app, document, {
     customSiteTitle: documentationConfig.name

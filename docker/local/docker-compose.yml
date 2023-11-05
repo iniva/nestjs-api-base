@@ -11,9 +11,8 @@ services:
       - ../../.env
     volumes:
       - ../../src:/app/src
-      - ../../client:/app/client
       - ../../dist:/app/dist
-      - ../../client:/app/dist/client
+      # - ../../migrations:/app/migrations
       - ../../tsconfig.json:/app/tsconfig.json
       - ../../tsconfig.build.json:/app/tsconfig.build.json
     command: [ 'npm', 'run', 'start:dev' ]
@@ -40,19 +39,6 @@ services:
       retries: 30
     logging:
       driver: none
-
-  documentation:
-    image: redocly/redoc
-    environment:
-      SPEC_URL: docs/api-docs.json
-    ports:
-      - 8080:80
-    networks:
-      - api-network
-    volumes:
-      - ../../client/:/usr/share/nginx/html/docs/
-    depends_on:
-      - api_server
 
 networks:
   api-network:
