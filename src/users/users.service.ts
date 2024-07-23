@@ -9,8 +9,8 @@ import { UserEntity } from './user.entity'
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>
-  ) { }
+    private usersRepository: Repository<UserEntity>,
+  ) {}
 
   async findAll(): Promise<User[]> {
     const users = await this.usersRepository.find()
@@ -39,7 +39,7 @@ export class UsersService {
       email: entity.email,
       active: entity.active,
       firstname: entity.firstname,
-      lastname: entity.lastname
+      lastname: entity.lastname,
     }
   }
 
@@ -50,7 +50,7 @@ export class UsersService {
       email: user.email,
       active: user.active,
       firstname: user.firstname || null,
-      lastname: user.lastname || null
+      lastname: user.lastname || null,
     }
   }
 }

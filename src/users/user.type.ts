@@ -7,7 +7,4 @@ export type User = {
   lastname: string | null
 }
 
-export type AuthedUser = Pick<
-  User,
-  'id' | 'email'
->
+export type AuthedUser = Pick<User, 'id' | 'email'>

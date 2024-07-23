@@ -12,18 +12,18 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true })
   const configService = app.get(ConfigService)
 
-  // set Express-specific configs
+  // Sets Express-specific configs
   for (const [option, value] of Object.entries(configService.get('app'))) {
     app.set(option, value)
   }
 
-  // Add censor options to Logger to hide sensitive data
+  // Adds custom options to the Logger
   app.useLogger(app.get(Logger))
 
-  // Guard API against some harmful headers
+  // Guards API against some harmful headers
   app.use(helmet())
 
-  // Enable App level protection against incorrect data
+  // Enables App level protection against incorrect data
   app.useGlobalPipes(new ValidationPipe(configService.get('validation')))
 
   // OpenAPI docs
@@ -33,12 +33,18 @@ async function bootstrap() {
     .setDescription(documentationConfig.description)
     .setVersion(documentationConfig.version)
     .build()
-  const document = SwaggerModule.createDocument(app, config)
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (_controllerKey, methodKey) => {
+      return methodKey.replace(/([a-z])([A-Z])/g, `$1 $2`)
+    },
+  })
 
   SwaggerModule.setup('api-docs', app, document, {
-    customSiteTitle: documentationConfig.name
+    customSiteTitle: documentationConfig.name,
   })
 
   await app.listen(configService.get('server.port'))
 }
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap()

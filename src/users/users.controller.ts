@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Post,
-  Put,
-  Request,
-  UseGuards
-} from '@nestjs/common'
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Request, UseGuards } from '@nestjs/common'
 import { v4 as uuid } from 'uuid'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
@@ -22,8 +12,8 @@ import { HashManager } from '../hash.manager'
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private hashManager: HashManager
-  ) { }
+    private hashManager: HashManager,
+  ) {}
 
   @Post()
   async create(@Body() dto: CreateUserDto) {
@@ -33,16 +23,13 @@ export class UsersController {
       password: await this.hashManager.createHash(dto.password),
       active: true,
       firstname: null,
-      lastname: null
+      lastname: null,
     }
 
     const existing = await this.usersService.findOne(user.email)
 
     if (existing) {
-      throw new HttpException(
-        `Email ${user.email} is already registered`,
-        HttpStatus.BAD_REQUEST
-      )
+      throw new HttpException(`Email ${user.email} is already registered`, HttpStatus.BAD_REQUEST)
     }
 
     await this.usersService.save(user)
@@ -67,7 +54,7 @@ export class UsersController {
 
     const updatedUser: User = {
       ...user,
-      ...dto
+      ...dto,
     }
 
     await this.usersService.save(updatedUser)

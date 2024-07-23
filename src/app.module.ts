@@ -25,11 +25,9 @@ import configuration from './config/configuration'
           // name: config.get('app.name'),
           level: config.get('logger.logLevel'),
           redact: {
-            paths: [
-              'req.headers.authorization'
-            ],
-            censor: '[redacted]'
-          }
+            paths: ['req.headers.authorization'],
+            censor: '[redacted]',
+          },
         },
       }),
     }),
@@ -46,15 +44,12 @@ import configuration from './config/configuration'
         logging: configService.get('database.logging'),
         synchronize: configService.get('database.synchronize'),
         entities: [`${__dirname}/**/*.entity{.ts,.js}`],
-      })
+      }),
     }),
     AuthModule,
-    UsersModule
+    UsersModule,
   ],
-  controllers: [
-    AppController,
-    HealthController
-  ],
+  controllers: [AppController, HealthController],
   providers: [AppService, HashManager],
 })
 export class AppModule {

@@ -12,4 +12,4 @@ import { HashManager } from '../hash.manager'
   exports: [UsersService],
   controllers: [UsersController],
 })
-export class UsersModule { }
+export class UsersModule {}

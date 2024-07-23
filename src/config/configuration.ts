@@ -6,7 +6,7 @@ const configuration = (): Configuration => {
   return {
     environment: process.env.NODE_ENV,
     server: {
-      port: Number.parseInt(process.env.SERVER_PORT, 10) || 8091,
+      port: Number.parseInt(process.env.APP_PORT, 10) || 3000,
       host: process.env.SERVER_HOST || '0.0.0.0',
     },
     app: {
@@ -41,8 +41,8 @@ const configuration = (): Configuration => {
       password: process.env.DB_PASSWORD || 'dev',
       name: process.env.DB_NAME || 'develop',
       logging: false,
-      synchronize: process.env.NODE_ENV !== 'production'
-    }
+      synchronize: process.env.NODE_ENV !== 'production',
+    },
   }
 }
 

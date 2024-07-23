@@ -19,7 +19,7 @@ describe('UsersController', () => {
             save: jest.fn(),
           },
         },
-        HashManager
+        HashManager,
       ],
     }).compile()
 
