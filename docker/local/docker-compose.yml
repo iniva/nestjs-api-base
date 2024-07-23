@@ -1,37 +1,24 @@
 services:
   api_server:
-    ports:
-      - 8091:8091
-    networks:
-      - api-network
     build:
-      context: ../../
-      dockerfile: ./docker/local/Dockerfile
+      context: ../..
+      dockerfile: docker/local/Dockerfile
+    volumes:
+      - ../../.:/app/.
     env_file:
       - ../../.env
-    volumes:
-      - ../../src:/app/src
-      - ../../dist:/app/dist
-      # - ../../migrations:/app/migrations
-      - ../../tsconfig.json:/app/tsconfig.json
-      - ../../tsconfig.build.json:/app/tsconfig.build.json
-    command: [ 'npm', 'run', 'start:dev' ]
+    ports:
+      - '3000:3000'
     depends_on:
       postgres:
         condition: service_healthy
 
   postgres:
-    image: postgres:13-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
       POSTGRES_DB: develop
-    ports:
-      - 10432:5432
-    networks:
-      - api-network
-    volumes:
-      - ./data/db:/data/db
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "dev", "-d", "develop" ]
       interval: 1s
@@ -39,7 +26,5 @@ services:
       retries: 30
     logging:
       driver: none
-
-networks:
-  api-network:
-    driver: bridge
+    ports:
+      - '5432:5432'

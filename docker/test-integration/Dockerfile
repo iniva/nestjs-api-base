@@ -1,4 +1,4 @@
-FROM node:18 as builder
+FROM node:20 as builder
 
 ENV HOME /app
 WORKDIR /app
@@ -8,4 +8,4 @@ COPY ./package-lock.json /app/package-lock.json
 
 RUN npm i
 
-CMD [ "npm", "run", "test:integration:debug" ]
+CMD [ "npm", "run", "test:integration" ]
