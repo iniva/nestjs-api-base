@@ -15,7 +15,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@Test/*": ["test/integration/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
