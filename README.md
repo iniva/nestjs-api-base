@@ -12,7 +12,6 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 - Utilities:
   - [x] Hash Manager: used for password hashing (with `bcrypt`)
   - [x] Bad Request Factory: Maps ValidatorError(s) and transforms the final response payload.
-  - [ ] Tracker Middleware: (currently not used) Placeholder middleware
 - Docker:
   - [x] **local**: for development
   - [x] **test-integration**: for integration tests
