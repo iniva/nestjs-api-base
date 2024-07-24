@@ -16,11 +16,11 @@ import { HashManager } from '../hash.manager'
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: jwtConstants.token_expiration
-      }
-    })
+        expiresIn: jwtConstants.token_expiration,
+      },
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, HashManager],
-  exports: [AuthService]
+  exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

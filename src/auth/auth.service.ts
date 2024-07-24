@@ -10,12 +10,12 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private hashManager: HashManager
-  ) { }
+    private hashManager: HashManager,
+  ) {}
 
   async validateUser(email: string, pass: string): Promise<AuthedUser | null> {
     const user = await this.usersService.findOne(email)
-    const equalPasswords = await this.hashManager.equals(pass, user?.password || '')
+    const equalPasswords = this.hashManager.equals(pass, user?.password || '')
 
     if (user && equalPasswords) {
       const { password, ...result } = user
@@ -30,7 +30,7 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id }
 
     return {
-      access_token: this.jwtService.sign(payload)
+      access_token: this.jwtService.sign(payload),
     }
   }
 }

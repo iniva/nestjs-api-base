@@ -16,7 +16,7 @@ jobs:
     name: Preparing pipeline
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Get npm cache directory
@@ -24,7 +24,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
       - name: Get npm cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -32,10 +32,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         name: Setting Node.js Version
         with:
-          node-version: '18.x'
+          node-version-file: .nvmrc
 
       - name: Install dependencies
         run: npm ci
@@ -52,7 +52,7 @@ jobs:
     name: ${{ matrix.test }} tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Get npm cache directory
@@ -60,7 +60,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
       - name: Get npm cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -68,10 +68,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         name: Setting Node.js Version
         with:
-          node-version: '18.x'
+          node-version-file: .nvmrc
 
       - name: Install dependencies
         run: npm ci
@@ -86,7 +86,7 @@ jobs:
     name: integration tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning repository
 
       - name: Running integration tests
