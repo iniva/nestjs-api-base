@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Request, UseGuards } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, Post, Put, Request, UseGuards } from '@nestjs/common'
 import { v4 as uuid } from 'uuid'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
@@ -22,14 +22,13 @@ export class UsersController {
       email: dto.email,
       password: await this.hashManager.createHash(dto.password),
       active: true,
-      firstname: null,
-      lastname: null,
+      createdAt: new Date(),
     }
 
     const existing = await this.usersService.findOne(user.email)
 
     if (existing) {
-      throw new HttpException(`Email ${user.email} is already registered`, HttpStatus.BAD_REQUEST)
+      throw new BadRequestException(`Email ${user.email} is already registered`)
     }
 
     await this.usersService.save(user)

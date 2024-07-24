@@ -13,18 +13,18 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
 
   // Sets Express-specific configs
-  for (const [option, value] of Object.entries(configService.get('app'))) {
+  for (const [option, value] of Object.entries(configService.get('app.expressOptions'))) {
     app.set(option, value)
   }
 
-  // Adds custom options to the Logger
+  // Adds customised Logger
   app.useLogger(app.get(Logger))
 
   // Guards API against some harmful headers
   app.use(helmet())
 
   // Enables App level protection against incorrect data
-  app.useGlobalPipes(new ValidationPipe(configService.get('validation')))
+  app.useGlobalPipes(new ValidationPipe(configService.get('app.validation')))
 
   // OpenAPI docs
   const documentationConfig = configService.get('documentation')
@@ -43,7 +43,7 @@ async function bootstrap() {
     customSiteTitle: documentationConfig.name,
   })
 
-  await app.listen(configService.get('server.port'))
+  await app.listen(configService.get('app.port'))
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

@@ -3,8 +3,10 @@ export type User = {
   password: string
   email: string
   active: boolean
-  firstname: string | null
-  lastname: string | null
+  firstName?: string | null
+  lastName?: string | null
+  createdAt: Date
+  updatedAt?: Date | null
 }
 
 export type AuthedUser = Pick<User, 'id' | 'email'>

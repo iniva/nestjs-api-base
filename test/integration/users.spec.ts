@@ -111,8 +111,8 @@ describe('users', () => {
     })
 
     const updateData = {
-      firstname: faker.person.firstName(),
-      lastname: faker.person.lastName(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
     }
     const updateResponse = await apiClient.put('/users', updateData, {
       headers: {
@@ -129,9 +129,9 @@ describe('users', () => {
     })
 
     expect(profileResponse.status).toEqual(200)
-    expect(profileResponse.data).toHaveProperty('firstname')
-    expect(profileResponse.data.firstname).toEqual(updateData.firstname)
-    expect(profileResponse.data).toHaveProperty('lastname')
-    expect(profileResponse.data.lastname).toEqual(updateData.lastname)
+    expect(profileResponse.data).toHaveProperty('firstName')
+    expect(profileResponse.data.firstName).toEqual(updateData.firstName)
+    expect(profileResponse.data).toHaveProperty('lastName')
+    expect(profileResponse.data.lastName).toEqual(updateData.lastName)
   })
 })

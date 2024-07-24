@@ -38,8 +38,10 @@ export class UsersService {
       password: entity.password,
       email: entity.email,
       active: entity.active,
-      firstname: entity.firstname,
-      lastname: entity.lastname,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     }
   }
 
@@ -49,8 +51,10 @@ export class UsersService {
       password: user.password,
       email: user.email,
       active: user.active,
-      firstname: user.firstname || null,
-      lastname: user.lastname || null,
+      firstName: user.firstName || null,
+      lastName: user.lastName || null,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt || null,
     }
   }
 }
