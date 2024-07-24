@@ -7,8 +7,6 @@ export default registerAs('postgres', () => ({
   password: process.env.POSTGRES_PASSWORD || 'dev',
   database: process.env.POSTGRES_DATABASE || 'develop',
   migrations: ['dist/migrations/*.js'],
-  migrationsRun: true,
-  synchronize: false,
   logging: ['info', 'warn', 'error'],
   extra: {
     poolSize: 5,

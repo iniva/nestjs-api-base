@@ -20,7 +20,7 @@ export class UsersController {
     const user: User = {
       id: uuid(),
       email: dto.email,
-      password: await this.hashManager.createHash(dto.password),
+      password: this.hashManager.createHash(dto.password),
       active: true,
       createdAt: new Date(),
     }
@@ -48,7 +48,7 @@ export class UsersController {
     const user = await this.usersService.findOne(req.user.email)
 
     if (dto.password) {
-      dto.password = await this.hashManager.createHash(dto.password)
+      dto.password = this.hashManager.createHash(dto.password)
     }
 
     const updatedUser: User = {

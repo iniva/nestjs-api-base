@@ -1,21 +1,28 @@
-import * as bcrypt from 'bcrypt'
+import { pbkdf2Sync } from 'node:crypto'
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class HashManager {
-  private readonly saltRounds: number
+  private salt: string
+  private iterations: number
+  private keyLength = 64
+  private digest = 'sha512'
 
-  constructor() {
-    this.saltRounds = 10
+  constructor(private readonly _configService: ConfigService) {
+    this.salt = this._configService.getOrThrow<string>('app.hash.salt')
+    this.iterations = this._configService.get<number>('app.hash.iterations')
   }
 
-  async createHash(text: string): Promise<string> {
-    const hash = await bcrypt.hash(text, this.saltRounds)
+  createHash(text: string): string {
+    const hash = pbkdf2Sync(text, this.salt, this.iterations, this.keyLength, this.digest).toString('hex')
 
     return hash
   }
 
-  async equals(unhashedText: string, hashedText: string): Promise<boolean> {
-    return await bcrypt.compare(unhashedText, hashedText)
+  equals(unhashedText: string, hashedText: string): boolean {
+    const hash = this.createHash(unhashedText)
+
+    return hash === hashedText
   }
 }

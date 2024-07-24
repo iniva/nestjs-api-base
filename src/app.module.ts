@@ -16,6 +16,7 @@ import pgConfig from './config/postgres.config'
   imports: [
     ConfigModule.forRoot({
       load: [appConfig, pgConfig],
+      isGlobal: true,
     }),
     LoggerModule.forRootAsync({
       providers: [ConfigService],
@@ -23,7 +24,7 @@ import pgConfig from './config/postgres.config'
       useFactory: (config: ConfigService) => ({
         pinoHttp: {
           // name: config.get('app.name'),
-          level: config.get('app.log.logLevel'),
+          level: config.get('app.log.level'),
           redact: {
             paths: ['req.headers.authorization'],
             censor: '[redacted]',
@@ -40,9 +41,10 @@ import pgConfig from './config/postgres.config'
         port: configService.get('postgres.port'),
         username: configService.get('postgres.username'),
         password: configService.get('postgres.password'),
-        postgres: configService.get('postgres.name'),
+        database: configService.get('postgres.database'),
         logging: configService.get('postgres.logging'),
-        synchronize: configService.get('postgres.synchronize'),
+        migrationsRun: true,
+        synchronize: false,
         entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       }),
     }),

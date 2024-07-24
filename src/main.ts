@@ -27,7 +27,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(configService.get('app.validation')))
 
   // OpenAPI docs
-  const documentationConfig = configService.get('documentation')
+  const documentationConfig = configService.get('app.documentation')
   const config = new DocumentBuilder()
     .setTitle(documentationConfig.name)
     .setDescription(documentationConfig.description)

@@ -17,6 +17,10 @@ export default registerAs('app', () => ({
   log: {
     level: process.env.APP_LOG_LEVEL || 'log',
   },
+  hash: {
+    salt: process.env.APP_HASH_SALT,
+    iterations: Number.parseInt(process.env.APP_HASH_ITERATIONS, 10) || 10000,
+  },
   validation: {
     whitelist: true,
     forbidUnknownValues: true,
