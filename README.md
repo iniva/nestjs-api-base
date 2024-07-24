@@ -12,29 +12,45 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 - Utilities:
   - [x] Hash Manager: used for password hashing (with `bcrypt`)
   - [x] Bad Request Factory: Maps ValidatorError(s) and transforms the final response payload.
-  - [ ] Tracker Middleware: (currently not used) Placeholder middleware
 - Docker:
   - [x] **local**: for development
   - [x] **test-integration**: for integration tests
   - [x] **live**: for deployment (dev, staging, prod, etc.)
 - [x] **CI**: GitHub workflow with running tests (lint, coverage, integration).
 
-## Local Setup
-- Clone this repo
-- Duplicate `.env.example` and rename it to `.env`. Update variables as you need.
-- Run the `run.sh` script from inside `docker/local` folder. This will build & start the API container (alongside with the database container)
-  ```sh
-  bash docker/local/run.sh
-  ```
-- By default, the API is listening on port `8091`. You can change this in the `.env` file.
+## Pre-requisites
+- Duplicate the `.env.example` file, rename it to `.env` and update the corresponding variables with valid values
 
-# Running Tests
-- **Unit**
-  > run `npm i` if you haven't already
-  ```sh
-  npm run test:unit
-  ```
-- **Integration**
-  ```sh
-  bash docker/test-integration/run.sh
-  ```
+## Running the service locally
+```sh
+bash docker/local/run.sh
+```
+
+## Testing Locally
+### Unit tests
+```sh
+# Run all unit tests
+npm run test:unit
+
+# Run specific unit test(s)
+npm run test:unit -- <pattern>
+
+# e.g.:
+npm run test:unit -- file.manager
+```
+
+### Integration tests
+> You need to have a valid `.env` file in the root of the project. The integration test suite uses this to mimic the behaviour it has during the CI runs
+```sh
+bash docker/test-integration/run.sh
+```
+
+## Other Commands
+### Creating migrations
+> Try using a meaningful name for your migrations
+```sh
+npm run migrate:create --name=<migrationName>
+
+# e.g.:
+npm run migrate:create --name=add_upc_to_product_variants_table
+```

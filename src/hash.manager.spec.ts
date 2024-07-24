@@ -1,12 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { HashManager } from './hash.manager'
+import { ConfigService } from '@nestjs/config'
 
 describe('HashManager', () => {
   let provider: HashManager
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HashManager],
+      providers: [
+        {
+          provide: ConfigService,
+          useValue: {
+            get: () => 10000,
+            getOrThrow: () => '123456',
+          },
+        },
+        HashManager,
+      ],
     }).compile()
 
     provider = module.get<HashManager>(HashManager)
@@ -18,23 +28,23 @@ describe('HashManager', () => {
 
   it('should create a hash from a text', async () => {
     const plainText = 'someString'
-    const hash = await provider.createHash(plainText)
+    const hash = provider.createHash(plainText)
 
     expect(plainText).not.toEqual(hash)
   })
 
   it('should fail when a hash is different from the original text', async () => {
     const plainText = 'someString'
-    const hash = await provider.createHash('anotherPlainText')
-    const equals = await provider.equals(plainText, hash)
+    const hash = provider.createHash('anotherPlainText')
+    const equals = provider.equals(plainText, hash)
 
     expect(equals).toBeFalsy
   })
 
   it('should return true when a hash is equal to the original text', async () => {
     const plainText = 'someString'
-    const hash = await provider.createHash(plainText)
-    const equals = await provider.equals(plainText, hash)
+    const hash = provider.createHash(plainText)
+    const equals = provider.equals(plainText, hash)
 
     expect(equals).toBeTruthy
   })

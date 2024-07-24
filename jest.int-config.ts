@@ -1,6 +1,6 @@
-import { Config } from '@jest/types'
+import { Config } from 'jest'
 
-const config: Config.InitialOptions = {
+const config: Config = {
   moduleFileExtensions: ['ts', 'js'],
   rootDir: 'test/integration',
   testRegex: '.*.spec.ts$',
@@ -11,6 +11,7 @@ const config: Config.InitialOptions = {
   verbose: true,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/../../src/$1',
+    '^@Test/(.*)$': '<rootDir>/../../test/integration/$1',
   },
   reporters: [['default', { summaryThreshold: 1 }]],
 }

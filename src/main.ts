@@ -12,33 +12,39 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true })
   const configService = app.get(ConfigService)
 
-  // set Express-specific configs
-  for (const [option, value] of Object.entries(configService.get('app'))) {
+  // Sets Express-specific configs
+  for (const [option, value] of Object.entries(configService.get('app.expressOptions'))) {
     app.set(option, value)
   }
 
-  // Add censor options to Logger to hide sensitive data
+  // Adds customised Logger
   app.useLogger(app.get(Logger))
 
-  // Guard API against some harmful headers
+  // Guards API against some harmful headers
   app.use(helmet())
 
-  // Enable App level protection against incorrect data
-  app.useGlobalPipes(new ValidationPipe(configService.get('validation')))
+  // Enables App level protection against incorrect data
+  app.useGlobalPipes(new ValidationPipe(configService.get('app.validation')))
 
   // OpenAPI docs
-  const documentationConfig = configService.get('documentation')
+  const documentationConfig = configService.get('app.documentation')
   const config = new DocumentBuilder()
     .setTitle(documentationConfig.name)
     .setDescription(documentationConfig.description)
     .setVersion(documentationConfig.version)
     .build()
-  const document = SwaggerModule.createDocument(app, config)
-
-  SwaggerModule.setup('api-docs', app, document, {
-    customSiteTitle: documentationConfig.name
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (_controllerKey, methodKey) => {
+      return methodKey.replace(/([a-z])([A-Z])/g, `$1 $2`)
+    },
   })
 
-  await app.listen(configService.get('server.port'))
+  SwaggerModule.setup('api-docs', app, document, {
+    customSiteTitle: documentationConfig.name,
+  })
+
+  await app.listen(configService.get('app.port'))
 }
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap()

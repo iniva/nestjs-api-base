@@ -1,23 +1,28 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity({ name: 'users' })
+@Entity({ name: 'user' })
 export class UserEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'text' })
   id: string
 
-  @Column()
+  @Column({ type: 'text' })
   password: string
 
-  @Column({ unique: true })
+  @Column({ type: 'text', unique: true })
   email: string
 
-  @Column({ nullable: true })
-  firstname: string
+  @Column({ name: 'first_name', type: 'text', nullable: true })
+  firstName: string
 
-  @Column({ nullable: true })
-  lastname: string
+  @Column({ name: 'last_name', type: 'text', nullable: true })
+  lastName: string
 
-  // Set to false when dealing with email verification flows
-  @Column({ default: true })
+  @Column({ default: false })
   active: boolean
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp without time zone' })
+  createdAt: Date
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp without time zone', nullable: true })
+  updatedAt: Date
 }

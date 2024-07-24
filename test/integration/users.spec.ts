@@ -15,7 +15,7 @@ describe('users', () => {
   it('should create a user when using valid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.string.alphanumeric(8)
+      password: faker.string.alphanumeric(8),
     }
 
     const response = await apiClient.post('/users', userData)
@@ -34,20 +34,20 @@ describe('users', () => {
   it('should return logged in user profile', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.string.alphanumeric(8)
+      password: faker.string.alphanumeric(8),
     }
 
     await apiClient.post('/users', userData)
 
     const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
-      password: userData.password
+      password: userData.password,
     })
 
     const profileResponse = await apiClient.get('/users/profile', {
       headers: {
-        Authorization: `Bearer ${authResponse.data.access_token}`
-      }
+        Authorization: `Bearer ${authResponse.data.access_token}`,
+      },
     })
 
     expect(profileResponse.status).toEqual(200)
@@ -58,7 +58,7 @@ describe('users', () => {
   it('should fail when trying to update user without being logged in', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.string.alphanumeric(8)
+      password: faker.string.alphanumeric(8),
     }
 
     await apiClient.post('/users', userData)
@@ -74,22 +74,22 @@ describe('users', () => {
   it('should fail when trying to update user with invalid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.string.alphanumeric(8)
+      password: faker.string.alphanumeric(8),
     }
 
     await apiClient.post('/users', userData)
 
     const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
-      password: userData.password
+      password: userData.password,
     })
 
     const emptyData = {}
     try {
       await apiClient.put('/users', emptyData, {
         headers: {
-          Authorization: `Bearer ${authResponse.data.access_token}`
-        }
+          Authorization: `Bearer ${authResponse.data.access_token}`,
+        },
       })
     } catch (error) {
       expect(error.response.status).toEqual(400)
@@ -100,38 +100,38 @@ describe('users', () => {
   it('should update the logged in user when using valid data', async () => {
     const userData = {
       email: faker.internet.email(),
-      password: faker.string.alphanumeric(8)
+      password: faker.string.alphanumeric(8),
     }
 
     await apiClient.post('/users', userData)
 
     const authResponse = await apiClient.post('/auth/login', {
       email: userData.email,
-      password: userData.password
+      password: userData.password,
     })
 
     const updateData = {
-      firstname: faker.person.firstName(),
-      lastname: faker.person.lastName()
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
     }
     const updateResponse = await apiClient.put('/users', updateData, {
       headers: {
-        Authorization: `Bearer ${authResponse.data.access_token}`
-      }
+        Authorization: `Bearer ${authResponse.data.access_token}`,
+      },
     })
 
     expect(updateResponse.status).toEqual(200)
 
     const profileResponse = await apiClient.get('/users/profile', {
       headers: {
-        Authorization: `Bearer ${authResponse.data.access_token}`
-      }
+        Authorization: `Bearer ${authResponse.data.access_token}`,
+      },
     })
 
     expect(profileResponse.status).toEqual(200)
-    expect(profileResponse.data).toHaveProperty('firstname')
-    expect(profileResponse.data.firstname).toEqual(updateData.firstname)
-    expect(profileResponse.data).toHaveProperty('lastname')
-    expect(profileResponse.data.lastname).toEqual(updateData.lastname)
+    expect(profileResponse.data).toHaveProperty('firstName')
+    expect(profileResponse.data.firstName).toEqual(updateData.firstName)
+    expect(profileResponse.data).toHaveProperty('lastName')
+    expect(profileResponse.data.lastName).toEqual(updateData.lastName)
   })
 })

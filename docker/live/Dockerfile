@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:18 as builder
+FROM node:20 as builder
 
 ENV HOME /app
 ENV HUSKY 0
@@ -10,23 +10,18 @@ COPY ./package-lock.json /app/package-lock.json
 
 RUN npm ci
 
+COPY ./migrations /app/migrations
+COPY ./src /app/src
 COPY ./tsconfig.json /app/tsconfig.json
 COPY ./tsconfig.build.json /app/tsconfig.build.json
-COPY ./src /app/src
-# uncomment when using migrations
-# COPY ./migrations /app/migrations
 
+RUN npm run prebuild
 RUN npm run build
-# -------
-# Below commands are commented because they cause an issue with
-# a dependency that requires node-gyp
-# -------
-# RUN rm -rf ./node_modules && \
-#   npm i --omit=dev --ignore-scripts
-# -------
+RUN rm -rf ./node_modules && \
+  npm i --omit=dev --ignore-scripts
 
 # Release stage
-FROM node:18-alpine
+FROM node:20-alpine
 ENV NODE_ENV=production
 ENV HOME /app
 WORKDIR /app
