@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
-import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -30,22 +29,6 @@ import pgConfig from './config/postgres.config'
             censor: '[redacted]',
           },
         },
-      }),
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('postgres.host'),
-        port: configService.get('postgres.port'),
-        username: configService.get('postgres.username'),
-        password: configService.get('postgres.password'),
-        database: configService.get('postgres.database'),
-        logging: configService.get('postgres.logging'),
-        migrationsRun: true,
-        synchronize: false,
-        entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       }),
     }),
     AuthModule,
