@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
 import { HashManager } from '../hash.manager'
+import { ConfigService } from '@nestjs/config'
 
 describe('UsersController', () => {
   let usersController: UsersController
@@ -17,6 +18,13 @@ describe('UsersController', () => {
             findAll: jest.fn(),
             findOne: jest.fn(),
             save: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: () => 10000,
+            getOrThrow: () => '123456',
           },
         },
         HashManager,
