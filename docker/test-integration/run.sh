@@ -8,7 +8,7 @@ if [ -f "$LOCAL_ENV_FILE" ]; then
   export $(grep -v '^#' $LOCAL_ENV_FILE | xargs)
 fi
 
-DOCKER_COMPOSE_FILE=$PWD/docker/test-integration/docker-compose.yaml
+DOCKER_COMPOSE_FILE=$PWD/docker/test-integration/docker-compose.yml
 
 DOCKER_BUILDKIT=1 docker compose -f $DOCKER_COMPOSE_FILE -p nestjs-api-base build
 DOCKER_BUILDKIT=1 docker compose -f $DOCKER_COMPOSE_FILE -p nestjs-api-base up --force-recreate --renew-anon-volumes --abort-on-container-exit
