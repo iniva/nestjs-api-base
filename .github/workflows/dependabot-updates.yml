@@ -43,7 +43,7 @@ jobs:
     name: Create branch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning "main" branch
         with:
           ref: 'main'
@@ -62,7 +62,7 @@ jobs:
     name: Create PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Cloning "main" branch
         with:
           ref: 'main'
