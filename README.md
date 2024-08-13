@@ -10,7 +10,7 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
   - [x] Healthcheck
   - [x] Users
 - Utilities:
-  - [x] Hash Manager: used for password hashing (with `bcrypt`)
+  - [x] Hash Manager: used for password hashing (with `node:crypto`)
   - [x] Bad Request Factory: Maps ValidatorError(s) and transforms the final response payload.
 - Docker:
   - [x] **local**: for development
