@@ -38,7 +38,7 @@ describe('HashManager', () => {
     const hash = provider.createHash('anotherPlainText')
     const equals = provider.equals(plainText, hash)
 
-    expect(equals).toBeFalsy
+    expect(equals).toBeFalsy()
   })
 
   it('should return true when a hash is equal to the original text', async () => {
@@ -46,6 +46,6 @@ describe('HashManager', () => {
     const hash = provider.createHash(plainText)
     const equals = provider.equals(plainText, hash)
 
-    expect(equals).toBeTruthy
+    expect(equals).toBeTruthy()
   })
 })
