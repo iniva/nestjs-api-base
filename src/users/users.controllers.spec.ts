@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { ConfigService } from '@nestjs/config'
 
 import { UsersController } from './users.controller'
 import { UsersService } from './users.service'
 import { HashManager } from '../hash.manager'
-import { ConfigService } from '@nestjs/config'
 
 describe('UsersController', () => {
   let usersController: UsersController

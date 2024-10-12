@@ -5,7 +5,7 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 
 ## Included
 - [x] **Authentication**: Local and JWT strategies.
-- [x] **Database**: Postgres (using TypeORM)
+- [x] **Database**: Postgres (using Prisma)
 - Endpoints:
   - [x] Healthcheck
   - [x] Users
@@ -20,6 +20,7 @@ API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_
 
 ## Pre-requisites
 - Duplicate the `.env.example` file, rename it to `.env` and update the corresponding variables with valid values
+- Duplicate the `.env.prisma.example` file, rename it to `.env.prisma` and update the corresponding variables with valid values
 
 ## Running the service locally
 ```sh
@@ -49,8 +50,8 @@ bash docker/test-integration/run.sh
 ### Creating migrations
 > Try using a meaningful name for your migrations
 ```sh
-npm run migrate:create --name=<migrationName>
+npm prisma:migrate:create --name=<migrationName>
 
 # e.g.:
-npm run migrate:create --name=add_upc_to_product_variants_table
+npm prisma:migrate:create --name=add_user_table
 ```

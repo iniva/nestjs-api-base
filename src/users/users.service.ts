@@ -1,60 +1,36 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { Repository } from 'typeorm'
+import { Injectable } from '@nestjs/common'
 
 import { User } from './user.type'
-import { UserEntity } from './user.entity'
-import { USER_REPOSITORY } from '@/database/constants'
+import { DatabaseService } from '@/database/database.service'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private usersRepository: Repository<UserEntity>,
+    private dbService: DatabaseService,
   ) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find()
+    const users = await this.dbService.user.findMany()
 
-    return users.map((user) => this.hydrate(user))
+    return users
   }
 
-  async findOne(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { email } })
+  async findByEmail(email: string): Promise<User | undefined> {
+    const user = await this.dbService.user.findUnique({ where: { email } })
 
     if (!user) {
       return undefined
     }
 
-    return this.hydrate(user)
+    return user
   }
 
-  async save(user: User): Promise<void> {
-    await this.usersRepository.save(this.dehydrate(user))
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    return this.dbService.user.create({ data })
   }
 
-  private hydrate(entity: UserEntity): User {
-    return {
-      id: entity.id,
-      password: entity.password,
-      email: entity.email,
-      active: entity.active,
-      firstName: entity.firstName,
-      lastName: entity.lastName,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    }
-  }
-
-  private dehydrate(user: User): UserEntity {
-    return {
-      id: user.id,
-      password: user.password,
-      email: user.email,
-      active: user.active,
-      firstName: user.firstName || null,
-      lastName: user.lastName || null,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt || null,
-    }
+  async update(email: string, data: Prisma.UserUpdateInput): Promise<User> {
+    return this.dbService.user.update({ data, where: { email } })
   }
 }

@@ -2,11 +2,11 @@ import { BadRequestException, Body, Controller, Get, Post, Put, Request, UseGuar
 import { v4 as uuid } from 'uuid'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { UsersService } from './users.service'
+import { HashManager } from '../hash.manager'
 import { User } from './user.type'
 import { CreateUserDto } from './dto/create-user.dto'
-import { UsersService } from './users.service'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { HashManager } from '../hash.manager'
 
 @Controller('users')
 export class UsersController {
@@ -25,19 +25,19 @@ export class UsersController {
       createdAt: new Date(),
     }
 
-    const existing = await this.usersService.findOne(user.email)
+    const existing = await this.usersService.findByEmail(user.email)
 
     if (existing) {
       throw new BadRequestException(`Email ${user.email} is already registered`)
     }
 
-    await this.usersService.save(user)
+    await this.usersService.create(user)
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req): Promise<Partial<User>> {
-    const { password, active, id, ...publicUser } = await this.usersService.findOne(req.user.email)
+    const { password, active, id, ...publicUser } = await this.usersService.findByEmail(req.user.email)
 
     return publicUser
   }
@@ -45,7 +45,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Put()
   async update(@Request() req, @Body() dto: UpdateUserDto): Promise<void> {
-    const user = await this.usersService.findOne(req.user.email)
+    const user = await this.usersService.findByEmail(req.user.email)
 
     if (dto.password) {
       dto.password = this.hashManager.createHash(dto.password)
@@ -56,6 +56,6 @@ export class UsersController {
       ...dto,
     }
 
-    await this.usersService.save(updatedUser)
+    await this.usersService.update(req.user.email, updatedUser)
   }
 }
