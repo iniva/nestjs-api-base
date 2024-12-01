@@ -1,5 +1,5 @@
+import { randomUUID } from 'node:crypto'
 import { BadRequestException, Body, Controller, Get, Post, Put, Request, UseGuards } from '@nestjs/common'
-import { v4 as uuid } from 'uuid'
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { User } from './user.type'
@@ -18,7 +18,7 @@ export class UsersController {
   @Post()
   async create(@Body() dto: CreateUserDto) {
     const user: User = {
-      id: uuid(),
+      id: randomUUID(),
       email: dto.email,
       password: this.hashManager.createHash(dto.password),
       active: true,
