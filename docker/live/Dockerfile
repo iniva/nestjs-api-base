@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:20 as builder
+FROM node:20 AS builder
 
 ENV HOME /app
 ENV HUSKY 0
