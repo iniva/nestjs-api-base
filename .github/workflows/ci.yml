@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - CHANGELOG.md
+      - package.json
+      - pnpm-lock.yaml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}

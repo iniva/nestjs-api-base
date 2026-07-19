@@ -1,0 +1,90 @@
+name: Changelog
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - CHANGELOG.md
+      - package.json
+      - pnpm-lock.yaml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          package_json_file: package.json
+          run_install: false
+
+      - name: Install node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies (frozen)
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate changelog and bump version
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --verbose --bump
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Bump package.json version
+        if: steps.git-cliff.outputs.version != ''
+        run: |
+          VERSION="${{ steps.git-cliff.outputs.version }}"
+          NEW_VERSION="${VERSION#v}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$NEW_VERSION" = "$CURRENT_VERSION" ]; then
+            echo "Version unchanged ($CURRENT_VERSION), skipping bump."
+            exit 0
+          fi
+          pnpm version "$NEW_VERSION" --no-git-tag-version
+
+      - name: Regenerate lockfile
+        if: steps.git-cliff.outputs.version != ''
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Commit and tag release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md package.json pnpm-lock.yaml
+          if git diff --cached --quiet; then
+            echo "Nothing to commit, skipping."
+            exit 0
+          fi
+          VERSION="${{ steps.git-cliff.outputs.version }}"
+          COMMIT_MSG="chore(release): ${VERSION:-update changelog}"
+          git commit -m "$COMMIT_MSG"
+          if [ -n "$VERSION" ]; then
+            git tag "v${VERSION#v}"
+            git push --follow-tags
+          else
+            git push
+          fi
