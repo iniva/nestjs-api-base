@@ -64,7 +64,7 @@ jobs:
             echo "Version unchanged ($CURRENT_VERSION), skipping bump."
             exit 0
           fi
-          pnpm version "$NEW_VERSION" --no-git-tag-version
+          npm pkg set version="$NEW_VERSION"
 
       - name: Regenerate lockfile
         if: steps.git-cliff.outputs.version != ''
