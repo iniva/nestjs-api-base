@@ -10,13 +10,13 @@
     "target": "ES2020",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "types": ["jest", "node"],
     "paths": {
-      "@/*": ["src/*"],
-      "@Test/*": ["test/integration/*"]
+      "@/*": ["./src/*"],
+      "@Test/*": ["./test/integration/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
