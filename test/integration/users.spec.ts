@@ -6,7 +6,7 @@ describe('users', () => {
   it('should fail when trying to create a user with invalid data', async () => {
     try {
       await apiClient.post('/users', {})
-    } catch (error) {
+    } catch (error: any) {
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toHaveProperty('error')
     }
@@ -26,7 +26,7 @@ describe('users', () => {
   it('should fail when trying to fetch profile without being logged in', async () => {
     try {
       await apiClient.get('/users/profile')
-    } catch (error) {
+    } catch (error: any) {
       expect(error.response.status).toEqual(401)
     }
   })
@@ -66,7 +66,7 @@ describe('users', () => {
     const emptyData = {}
     try {
       await apiClient.put('/users', emptyData)
-    } catch (error) {
+    } catch (error: any) {
       expect(error.response.status).toEqual(401)
     }
   })
@@ -91,7 +91,7 @@ describe('users', () => {
           Authorization: `Bearer ${authResponse.data.access_token}`,
         },
       })
-    } catch (error) {
+    } catch (error: any) {
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toHaveProperty('error')
     }

@@ -12,13 +12,13 @@ export default registerAs('app', () => ({
     version,
   },
   environment: process.env.APP_ENV || 'staging',
-  port: Number.parseInt(process.env.APP_PORT, 10) || 3000,
+  port: Number.parseInt(process.env.APP_PORT ?? '', 10) || 3000,
   log: {
     level: process.env.APP_LOG_LEVEL || 'log',
   },
   hash: {
     salt: process.env.APP_HASH_SALT,
-    iterations: Number.parseInt(process.env.APP_HASH_ITERATIONS, 10) || 10000,
+    iterations: Number.parseInt(process.env.APP_HASH_ITERATIONS ?? '', 10) || 10000,
   },
   validation: {
     whitelist: true,

@@ -11,7 +11,7 @@ export class HashManager {
 
   constructor(private readonly _configService: ConfigService) {
     this.salt = this._configService.getOrThrow<string>('app.hash.salt')
-    this.iterations = this._configService.get<number>('app.hash.iterations')
+    this.iterations = this._configService.getOrThrow<number>('app.hash.iterations')
   }
 
   createHash(text: string): string {

@@ -12,7 +12,7 @@ describe('HashManager', () => {
           provide: ConfigService,
           useValue: {
             get: () => 10000,
-            getOrThrow: () => '123456',
+            getOrThrow: (key: string) => key === 'app.hash.iterations' ? 10000 : '123456',
           },
         },
         HashManager,

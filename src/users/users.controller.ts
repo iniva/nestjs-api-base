@@ -36,15 +36,15 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Request() req): Promise<Partial<User>> {
-    const { password, active, id, ...publicUser } = await this.usersService.findOne(req.user.email)
+  async getProfile(@Request() req: any): Promise<Partial<User>> {
+    const { password, active, id, ...publicUser } = (await this.usersService.findOne(req.user.email))!
 
     return publicUser
   }
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  async update(@Request() req, @Body() dto: UpdateUserDto): Promise<void> {
+  async update(@Request() req: any, @Body() dto: UpdateUserDto): Promise<void> {
     const user = await this.usersService.findOne(req.user.email)
 
     if (dto.password) {
@@ -52,7 +52,7 @@ export class UsersController {
     }
 
     const updatedUser: User = {
-      ...user,
+      ...user!,
       ...dto,
     }
 
