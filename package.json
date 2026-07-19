@@ -6,6 +6,10 @@
   "repository": "git@github.com:iniva/nestjs-api-base.git",
   "author": "Tony DBR <tonyblast@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+  },
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "nest build",
@@ -24,7 +28,7 @@
     "test:integration:debug": "jest --config=jest.int-config.ts --detectOpenHandles",
     "healthcheck": "curl -f http://localhost:3000/health | grep ok || echo 'error'",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migrate:create": "npm run typeorm migration:create ./migrations/$npm_config_name",
+    "migrate:create": "pnpm run typeorm migration:create ./migrations/$NAME",
     "prepare": "husky"
   },
   "dependencies": {
@@ -35,7 +39,6 @@
     "@nestjs/mapped-types": "2.1.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.5",
-    "@nestjs/swagger": "^11.0.3",
     "@nestjs/typeorm": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -59,7 +62,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20.14.11",
+    "@types/node": "^24.0.0",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "axios": "^1.7.9",
@@ -113,5 +116,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "packageManager": "pnpm@11.11.0+sha512.4463f65fd80ed80d69bc1d4bf163ee94f605c7380fc318bb5b2ebe15f8cd12d49c51a4d59e951b401e764d3b6ca751cbf51bc50ed7001a6bcb4935e684c34882"
 }
