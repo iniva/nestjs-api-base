@@ -29,6 +29,7 @@
     "healthcheck": "curl -f http://localhost:3000/health | grep ok || echo 'error'",
     "typeorm": "typeorm-ts-node-commonjs",
     "migrate:create": "pnpm run typeorm migration:create ./migrations/$NAME",
+    "changelog": "git-cliff --output CHANGELOG.md",
     "prepare": "husky"
   },
   "dependencies": {
@@ -78,6 +79,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.0",
+    "git-cliff": "^2.8.0",
     "typescript-eslint": "^8.64.0"
   },
   "jest": {
