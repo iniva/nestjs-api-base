@@ -1,7 +1,7 @@
 [![CI](https://github.com/iniva/nestjs-api-base/actions/workflows/ci.yml/badge.svg)](https://github.com/iniva/nestjs-api-base/actions/workflows/ci.yml)
 
 # NestJS API Base
-API based on [NestJS](https://nestjs.com) <img src="https://nestjs.com/img/logo_text.svg" width="80" alt="Nest Logo" />
+API based on [NestJS](https://nestjs.com) <img src="https://docs.nestjs.com/assets/logo-small-gradient.svg" width="80" alt="Nest Logo" />
 
 ## Included
 - [x] **Authentication**: Local and JWT strategies.
@@ -30,13 +30,13 @@ bash docker/local/run.sh
 ### Unit tests
 ```sh
 # Run all unit tests
-npm run test:unit
+pnpm run test:unit
 
 # Run specific unit test(s)
-npm run test:unit -- <pattern>
+pnpm run test:unit -- <pattern>
 
 # e.g.:
-npm run test:unit -- file.manager
+pnpm run test:unit -- file.manager
 ```
 
 ### Integration tests
@@ -49,8 +49,8 @@ bash docker/test-integration/run.sh
 ### Creating migrations
 > Try using a meaningful name for your migrations
 ```sh
-npm run migrate:create --name=<migrationName>
+NAME=<migrationName> pnpm run migrate:create
 
 # e.g.:
-npm run migrate:create --name=add_upc_to_product_variants_table
+NAME=add_upc_to_product_variants_table pnpm run migrate:create
 ```

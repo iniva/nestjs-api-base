@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { Logger } from 'nestjs-pino'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import helmet from 'helmet'
 
 import { AppModule } from './app.module'
@@ -26,22 +25,7 @@ async function bootstrap() {
   // Enables App level protection against incorrect data
   app.useGlobalPipes(new ValidationPipe(configService.get('app.validation')))
 
-  // OpenAPI docs
-  const documentationConfig = configService.get('app.documentation')
-  const config = new DocumentBuilder()
-    .setTitle(documentationConfig.name)
-    .setDescription(documentationConfig.description)
-    .setVersion(documentationConfig.version)
-    .build()
-  const document = SwaggerModule.createDocument(app, config, {
-    operationIdFactory: (_controllerKey, methodKey) => {
-      return methodKey.replace(/([a-z])([A-Z])/g, `$1 $2`)
-    },
-  })
-
-  SwaggerModule.setup('api-docs', app, document, {
-    customSiteTitle: documentationConfig.name,
-  })
+  app.enableShutdownHooks()
 
   await app.listen(configService.get('app.port'))
 }

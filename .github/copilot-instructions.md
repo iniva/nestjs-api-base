@@ -11,14 +11,14 @@ This is a production-ready **NestJS REST API base template** with JWT authentica
 | Layer | Technology |
 |---|---|
 | Framework | NestJS v11 (TypeScript v5) |
-| Database | PostgreSQL 15 via TypeORM v0.3 |
+| Database | PostgreSQL 18 via TypeORM v0.3 |
 | Authentication | Passport.js — local (email/password) + JWT bearer tokens |
 | Password hashing | Node.js `crypto.pbkdf2Sync` (PBKDF2, 10 000 iterations) |
 | Logging | Pino via `nestjs-pino` (structured JSON, auth header redacted) |
-| API docs | Swagger/OpenAPI via `@nestjs/swagger` (Swagger plugin enabled) |
 | Validation | `class-validator` + `class-transformer` |
 | HTTP security | `helmet` |
 | Containerisation | Docker multi-stage builds; Docker Compose for local dev & integration tests |
+| Package manager | pnpm 11 (via Corepack; `packageManager` field pins the version) |
 | Testing | Jest v29 + ts-jest; Faker.js + Axios for integration tests |
 
 ---
@@ -27,7 +27,7 @@ This is a production-ready **NestJS REST API base template** with JWT authentica
 
 ```
 src/
-├── main.ts                        # Bootstrap: Pino logger, Helmet, global validation pipe, Swagger
+├── main.ts                        # Bootstrap: Pino logger, Helmet, global validation pipe
 ├── app.module.ts                  # Root module
 ├── app.controller.ts              # POST /auth/login (LocalAuthGuard)
 ├── app.service.ts                 # Minimal root service
@@ -60,7 +60,6 @@ src/
 ├── config/
 │   ├── app.config.ts              # APP_ENV, APP_PORT, APP_LOG_LEVEL, APP_HASH_SALT, APP_HASH_ITERATIONS
 │   └── postgres.config.ts         # DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE
-├── common/
 │   └── bad-request.factory.ts     # Maps class-validator errors → structured 400 JSON
 └── health/
     └── health.controller.ts       # GET /health
@@ -132,7 +131,7 @@ test/
 
 ### TypeORM Entities
 - Entities live in `*.entity.ts` files and are auto-discovered by TypeORM.
-- Schema changes are done through migrations (`npm run migrate:create`).
+- Schema changes are done through migrations (`NAME=<name> pnpm run migrate:create`).
 - Migrations run automatically on startup (`migrationsRun: true`).
 
 ### Path Aliases
@@ -150,8 +149,8 @@ test/
 
 ### Unit Tests
 ```bash
-npm run test:unit
-npm run test:coverage
+pnpm run test:unit
+pnpm run test:coverage
 ```
 - Co-located with source files as `*.spec.ts`.
 - Use Jest mocks for dependencies.
@@ -159,7 +158,7 @@ npm run test:coverage
 ### Integration Tests
 ```bash
 # Requires a running Postgres instance or Docker
-npm run test:integration
+pnpm run test:integration
 bash docker/test-integration/run.sh
 ```
 - Located in `test/integration/`.
@@ -182,13 +181,13 @@ bash docker/test-integration/run.sh
 ## Common Commands
 
 ```bash
-npm run start:debug          # Local dev with watch + debugger
-npm run build                # Compile TypeScript → dist/
-npm run test:unit            # Unit tests
-npm run test:integration     # Integration tests
-npm run test:coverage        # Coverage report
-npm run migrate:create       # Scaffold a new TypeORM migration
-npm run healthcheck          # curl GET /health
+pnpm run start:debug          # Local dev with watch + debugger
+pnpm run build                # Compile TypeScript → dist/
+pnpm run test:unit            # Unit tests
+pnpm run test:integration     # Integration tests
+pnpm run test:coverage        # Coverage report
+NAME=<migration_name> pnpm run migrate:create   # Scaffold a new TypeORM migration
+pnpm run healthcheck          # curl GET /health
 ```
 
 ---

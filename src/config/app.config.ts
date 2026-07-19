@@ -1,9 +1,8 @@
 import { registerAs } from '@nestjs/config'
 
 import { BadRequestFactory } from '../common/bad-request.factory'
-import { description, version } from '../../package.json'
+import { version } from '../../package.json'
 
-const appName = process.env.APP_NAME || 'NestJS API'
 
 export default registerAs('app', () => ({
   expressOptions: {
@@ -29,10 +28,5 @@ export default registerAs('app', () => ({
       value: true,
     },
     exceptionFactory: (errors: any) => BadRequestFactory.createFromErrors(errors),
-  },
-  documentation: {
-    name: appName,
-    description,
-    version,
   },
 }))

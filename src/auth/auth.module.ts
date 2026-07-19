@@ -16,7 +16,7 @@ import { HashManager } from '../hash.manager'
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: jwtConstants.token_expiration,
+        expiresIn: jwtConstants.token_expiration as any,
       },
     }),
   ],

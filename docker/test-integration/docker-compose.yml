@@ -8,8 +8,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    stop_grace_period: 5s
     healthcheck:
-      test: ["CMD", "npm", "run", "healthcheck"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
       interval: 5s
       timeout: 30s
       retries: 3
@@ -17,7 +18,7 @@ services:
       driver: none
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev
@@ -37,10 +38,10 @@ services:
     env_file:
       - .env.test
     volumes:
-      - ../../test:/app/test
-      - ../../src:/app/src
-      - ../../tsconfig.json:/app/tsconfig.json
-      - ../../jest.int-config.ts:/app/jest.int-config.ts
+      - ../../test:/app/test:z
+      - ../../src:/app/src:z
+      - ../../tsconfig.json:/app/tsconfig.json:z
+      - ../../jest.int-config.ts:/app/jest.int-config.ts:z
     depends_on:
       api_server:
         condition: service_healthy
