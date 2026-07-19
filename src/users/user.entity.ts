@@ -3,26 +3,26 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } fro
 @Entity({ name: 'user' })
 export class UserEntity {
   @PrimaryColumn({ type: 'text' })
-  id: string
+  declare id: string
 
   @Column({ type: 'text' })
-  password: string
+  declare password: string
 
   @Column({ type: 'text', unique: true })
-  email: string
+  declare email: string
 
   @Column({ name: 'first_name', type: 'text', nullable: true })
-  firstName: string
+  declare firstName: string | null
 
   @Column({ name: 'last_name', type: 'text', nullable: true })
-  lastName: string
+  declare lastName: string | null
 
   @Column({ default: false })
-  active: boolean
+  declare active: boolean
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp without time zone' })
-  createdAt: Date
+  declare createdAt: Date
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp without time zone', nullable: true })
-  updatedAt: Date
+  declare updatedAt: Date | null
 }

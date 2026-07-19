@@ -16,7 +16,7 @@ describe('auth', () => {
         email: faker.internet.email(),
         password: userData.password,
       })
-    } catch (error) {
+    } catch (error: any) {
       expect(error.response.status).toEqual(401)
     }
   })

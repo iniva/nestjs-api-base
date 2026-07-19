@@ -11,7 +11,7 @@ export class BadRequestFactory {
     errors.forEach((error) => {
       const propertyName = parentProperty ? `${parentProperty}.${error.property}` : error.property
 
-      if (error.children.length > 0) {
+      if (error.children && error.children.length > 0) {
         const nestedMappedErrors = BadRequestFactory.mapErrors(error.children, propertyName)
 
         Object.entries(nestedMappedErrors).forEach(([errorKey, errorValues]) => {
@@ -21,7 +21,7 @@ export class BadRequestFactory {
         return
       }
 
-      mappedError[propertyName] = Object.entries(error.constraints).map((constraint) =>
+      mappedError[propertyName] = Object.entries(error.constraints!).map((constraint) =>
         constraint[1].replace(`${error.property} `, `[${error.value}] `),
       )
     })

@@ -27,7 +27,7 @@ async function bootstrap() {
 
   app.enableShutdownHooks()
 
-  await app.listen(configService.get('app.port'))
+  await app.listen(configService.getOrThrow('app.port'))
 }
 
 bootstrap()
