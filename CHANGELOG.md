@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [unreleased]
+## [1.4.1] - 2026-07-20
 
 ### Build
 
@@ -15,6 +15,14 @@ All notable changes to this project will be documented in this file.
 ### CI
 
 - Bump actions. Use .nvmrc as node version tracker
+
+- Support generating CHANGELOG and bumping package version (#276)
+
+- Fix tag command (#278)
+
+- Prevent Husky hooks from being triggered (#280)
+
+- Use PAT token (#282)
 
 
 ### Documentation

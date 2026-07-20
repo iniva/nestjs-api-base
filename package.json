@@ -1,6 +1,6 @@
 {
   "name": "nestjs-api-base",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "API based on NestJS",
   "main": "index.js",
   "repository": "git@github.com:iniva/nestjs-api-base.git",
@@ -71,6 +71,7 @@
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
+    "git-cliff": "^2.8.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "prettier": "^3.9.5",
@@ -79,7 +80,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.0",
-    "git-cliff": "^2.8.0",
     "typescript-eslint": "^8.64.0"
   },
   "jest": {
