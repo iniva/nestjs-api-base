@@ -71,6 +71,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Commit and tag release
+        env:
+          HUSKY: '0'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
