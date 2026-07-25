@@ -21,8 +21,11 @@ export class UsersController {
       id: randomUUID(),
       email: dto.email,
       password: this.hashManager.createHash(dto.password),
+      firstName: null,
+      lastName: null,
       active: true,
       createdAt: new Date(),
+      updatedAt: null,
     }
 
     const existing = await this.usersService.findOne(user.email)

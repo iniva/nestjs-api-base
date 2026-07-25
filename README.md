@@ -5,7 +5,7 @@ API based on [NestJS](https://nestjs.com) <img src="https://docs.nestjs.com/asse
 
 ## Included
 - [x] **Authentication**: Local and JWT strategies.
-- [x] **Database**: Postgres (using TypeORM)
+- [x] **Database**: Postgres (using Drizzle ORM)
 - Endpoints:
   - [x] Healthcheck
   - [x] Users
@@ -47,10 +47,7 @@ bash docker/test-integration/run.sh
 
 ## Other Commands
 ### Creating migrations
-> Try using a meaningful name for your migrations
+> Migrations are SQL files generated from schema changes. Run after modifying `src/database/schema.ts`
 ```sh
-NAME=<migrationName> pnpm run migrate:create
-
-# e.g.:
-NAME=add_upc_to_product_variants_table pnpm run migrate:create
+pnpm run migrate:generate
 ```

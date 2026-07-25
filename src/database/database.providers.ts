@@ -1,7 +1,10 @@
-import { DataSource } from 'typeorm'
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { Provider } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
+import * as schema from './schema'
 import { DATA_SOURCE } from './constants'
 
 export const databaseProviders: Provider[] = [
@@ -9,21 +12,20 @@ export const databaseProviders: Provider[] = [
     inject: [ConfigService],
     provide: DATA_SOURCE,
     useFactory: async (config: ConfigService) => {
-      const dataSource = new DataSource({
-        type: 'postgres',
+      const client = postgres({
         host: config.get('postgres.host'),
         port: config.get('postgres.port'),
         username: config.get('postgres.username'),
         password: config.get('postgres.password'),
         database: config.get('postgres.database'),
-        logging: config.get('postgres.logging'),
-        migrations: ['dist/migrations/*{.ts,.js}'],
-        migrationsRun: true,
-        synchronize: false,
-        entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
+        max: config.get('postgres.poolSize'),
       })
 
-      return dataSource.initialize()
+      const db = drizzle(client, { schema })
+
+      await migrate(db, { migrationsFolder: './drizzle/migrations' })
+
+      return db
     },
   },
 ]
