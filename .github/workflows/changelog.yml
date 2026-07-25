@@ -86,8 +86,10 @@ jobs:
           COMMIT_MSG="chore(release): ${VERSION:-update changelog}"
           git commit -m "$COMMIT_MSG"
           if [ -n "$VERSION" ]; then
-            git tag "v${VERSION#v}"
+            echo "Tagging and pushing release ${VERSION}"
+            git tag -a "v${VERSION#v}" -m "Release v${VERSION#v}"
             git push --follow-tags
           else
+            echo "No version bump detected, pushing changelog update only"
             git push
           fi
