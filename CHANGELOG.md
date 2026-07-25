@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.4.1] - 2026-07-20
+## [1.4.1] - 2026-07-25
 
 ### Build
 
@@ -23,6 +23,8 @@ All notable changes to this project will be documented in this file.
 - Prevent Husky hooks from being triggered (#280)
 
 - Use PAT token (#282)
+
+- Add missing message to tag. Add logs (#285)
 
 
 ### Documentation
