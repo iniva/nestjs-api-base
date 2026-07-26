@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 
 - Improve dependabot flows (#292)
 
+- Add missing permission and PAT to dependabot workflow (#296)
+
 
 ## [1.5.0] - 2026-07-26
 
