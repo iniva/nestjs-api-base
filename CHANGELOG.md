@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.5.1] - 2026-07-26
+
+### CI
+
+- Improve dependabot flows (#292)
+
+
 ## [1.5.0] - 2026-07-26
 
 ### Features
