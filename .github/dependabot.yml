@@ -13,6 +13,45 @@ updates:
       time: "09:00"
     assignees:
       - "iniva"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      testing:
+        patterns:
+          - "jest"
+          - "@jest/*"
+          - "ts-jest"
+          - "@faker-js/faker"
+          - "axios"
+          - "@nestjs/testing"
+          - "@types/jest"
+      linting:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "prettier"
+          - "*eslint*"
+          - "*prettier*"
+          - "typescript-eslint"
+      types:
+        patterns:
+          - "@types/*"
+      nestjs:
+        patterns:
+          - "@nestjs/*"
+      passport:
+        patterns:
+          - "passport"
+          - "passport-*"
+      drizzle:
+        patterns:
+          - "drizzle-orm"
+          - "drizzle-kit"
+          - "postgres"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -24,3 +63,12 @@ updates:
       time: "09:00"
     assignees:
       - "iniva"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
