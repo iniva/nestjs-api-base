@@ -1,12 +1,5 @@
-export type User = {
-  id: string
-  password: string
-  email: string
-  active: boolean
-  firstName?: string | null
-  lastName?: string | null
-  createdAt: Date
-  updatedAt?: Date | null
-}
+import { users } from '@/database/schema'
+
+export type User = typeof users.$inferSelect
 
 export type AuthedUser = Pick<User, 'id' | 'email'>
