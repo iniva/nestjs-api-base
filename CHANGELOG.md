@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.5.0] - 2026-07-26
+
+### Features
+
+- Replace TypeORM with Drizzle ORM and postgres.js driver (#288)
+
+
 ## [1.4.1] - 2026-07-25
 
 ### Build
