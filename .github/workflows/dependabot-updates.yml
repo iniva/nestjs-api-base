@@ -7,85 +7,54 @@ on:
       - 'main'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 env:
   DEPENDABOT_BRANCH: dependabot-updates
-  WF_RUN_ID: ${{ github.run_id }}
-  GH_WORKFLOW_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  AUTHOR_NAME: ${{ github.event.pusher.name }}
-  AUTHOR_EMAIL: ${{ github.event.pusher.email }}
 
 jobs:
-  decision:
-    name: Decide how to proceed
-    runs-on: ubuntu-latest
-    outputs:
-      action: ${{ steps.verification.outputs.action }}
-    env:
-      REPOSITORY: ${{ github.repository }}
-    steps:
-      - name: Verifying if dependabot branch exist
-        id: verification
-        run: |
-          FOUND=$(git ls-remote https://github.com/${REPOSITORY} --heads origin ${DEPENDABOT_BRANCH})
-
-          if [[ -z ${FOUND} ]]; then
-            echo "action=create-branch" >> $GITHUB_OUTPUT
-          else
-            echo "action=create-pr" >> $GITHUB_OUTPUT
-          fi
-
-  create-branch:
-    needs: decision
-    if: ${{ needs.decision.outputs.action == 'create-branch' }}
-    name: Create branch
+  sync:
+    name: Sync dependabot-updates with main
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-        name: Cloning "main" branch
+        name: Checkout main
         with:
-          ref: 'main'
+          fetch-depth: 0
 
-      - name: Creating branch
+      - name: Configure git
+        run: |
+          git config user.email "${{ github.event.pusher.email || 'github-actions[bot]@users.noreply.github.com' }}"
+          git config user.name  "${{ github.event.pusher.name || 'github-actions[bot]' }}"
+
+      - name: Check if branch exists
+        id: check
+        run: |
+          if git ls-remote --exit-code origin refs/heads/${{ env.DEPENDABOT_BRANCH }} > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create branch from main
+        if: steps.check.outputs.exists == 'false'
         run: |
           echo "Creating '${{ env.DEPENDABOT_BRANCH }}' branch"
           git checkout -b ${{ env.DEPENDABOT_BRANCH }}
-
-          echo "Pushing '${{ env.DEPENDABOT_BRANCH }}' branch"
           git push origin ${{ env.DEPENDABOT_BRANCH }}
 
-  create-pr:
-    needs: decision
-    if: ${{ needs.decision.outputs.action == 'create-pr' }}
-    name: Create PR
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        name: Cloning "main" branch
-        with:
-          ref: 'main'
-
-      - name: Creating PR
-        env:
-          NEW_BRANCH: ${{ env.DEPENDABOT_BRANCH }}-${{ env.WF_RUN_ID }}
-          GH_TOKEN: ${{ github.token }}
+      - name: Rebase onto main
+        if: steps.check.outputs.exists == 'true'
         run: |
-          git config --global user.email "${{ env.AUTHOR_EMAIL }}"
-          git config --global user.name  "${{ env.AUTHOR_NAME }}"
+          git checkout ${{ env.DEPENDABOT_BRANCH }}
 
-          echo "Creating branch '${{ env.NEW_BRANCH }}'"
-          git checkout -b ${{ env.NEW_BRANCH }}
+          if git rebase -X ours origin/main; then
+            echo "Rebase successful"
+          else
+            echo "Rebase failed, aborting and resetting to origin/main"
+            git rebase --abort
+            git reset --hard origin/main
+          fi
 
-          echo "Pushing new branch"
-          git push origin ${{ env.NEW_BRANCH }}
-
-          echo "Creating PR"
-          GENERATED_AT=$(date '+%Y%m%d')
-          PR_TITLE="Update ${{ env.DEPENDABOT_BRANCH }} - ${GENERATED_AT}"
-          PR_BODY="
-          :gift: auto-generated PR created by [this workflow](${GH_WORKFLOW_URL})
-          "
-
-          gh pr create --title "${PR_TITLE}" --body "${PR_BODY}" --base ${{ env.DEPENDABOT_BRANCH }} --head ${{ env.NEW_BRANCH }}
+          git push --force-with-lease origin ${{ env.DEPENDABOT_BRANCH }}
