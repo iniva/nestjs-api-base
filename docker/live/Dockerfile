@@ -10,7 +10,7 @@ WORKDIR /app
 COPY ./package.json /app/package.json
 COPY ./pnpm-lock.yaml /app/pnpm-lock.yaml
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY ./drizzle /app/drizzle
 COPY ./src /app/src

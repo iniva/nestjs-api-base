@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { apiClient } from './helpers/api'
+import { apiClient } from '@Test/helpers/api'
 
 describe('auth', () => {
   it('should fail when using invalid credentials', async () => {

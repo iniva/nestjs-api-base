@@ -41,6 +41,7 @@ services:
       - ../../test:/app/test:z
       - ../../src:/app/src:z
       - ../../tsconfig.json:/app/tsconfig.json:z
+      - ../../tsconfig.int.json:/app/tsconfig.int.json:z
       - ../../jest.int-config.ts:/app/jest.int-config.ts:z
     depends_on:
       api_server:

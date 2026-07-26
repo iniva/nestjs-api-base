@@ -4,6 +4,7 @@
 API based on [NestJS](https://nestjs.com) <img src="https://docs.nestjs.com/assets/logo-small-gradient.svg" width="80" alt="Nest Logo" />
 
 ## Included
+- [x] **Architecture**: Hexagonal Architecture (Ports & Adapters) + Vertical Slices, with `eslint-plugin-boundaries` enforcing the dependency rule in CI.
 - [x] **Authentication**: Local and JWT strategies.
 - [x] **Database**: Postgres (using Drizzle ORM)
 - Endpoints:
@@ -17,6 +18,24 @@ API based on [NestJS](https://nestjs.com) <img src="https://docs.nestjs.com/asse
   - [x] **test-integration**: for integration tests
   - [x] **live**: for deployment (dev, staging, prod, etc.)
 - [x] **CI**: GitHub workflow with running tests (lint, coverage, integration).
+
+## Architecture Overview
+
+The project uses **Hexagonal Architecture** organised as **Vertical Slices**. Each feature is a self-contained folder under `src/features/` with four layers:
+
+```
+src/features/{feature}/
+├── domain/            # Pure TypeScript classes — no framework or ORM dependencies
+├── application/       # Use cases (service) + outbound port contracts (abstract classes)
+│   └── ports/
+├── infrastructure/    # Drizzle schema, repository adapters, mappers
+│   └── persistence/
+└── presenter/http/    # REST controllers and DTOs
+```
+
+Shared cross-cutting utilities (guards, `HashManager`, `BadRequestFactory`, `DatabaseModule`) live in `src/shared/`. Configs live in `src/configs/`.
+
+The dependency rule (domain ← application ← infrastructure, presenter → application) is enforced automatically by `eslint-plugin-boundaries` on every pull request.
 
 ## Pre-requisites
 - Duplicate the `.env.example` file, rename it to `.env` and update the corresponding variables with valid values
@@ -36,7 +55,7 @@ pnpm run test:unit
 pnpm run test:unit -- <pattern>
 
 # e.g.:
-pnpm run test:unit -- file.manager
+pnpm run test:unit -- hash.manager
 ```
 
 ### Integration tests
@@ -45,9 +64,16 @@ pnpm run test:unit -- file.manager
 bash docker/test-integration/run.sh
 ```
 
+Integration test specs live in `test/integration/features/`, mirroring the `src/features/` structure. Add a new `{feature}.spec.ts` there when adding a new feature.
+
 ## Other Commands
+### Lint (includes architectural boundary checks)
+```sh
+pnpm run test:lint
+```
+
 ### Creating migrations
-> Migrations are SQL files generated from schema changes. Run after modifying `src/database/schema.ts`
+> Migrations are SQL files generated from schema changes. After modifying any feature schema file under `src/features/*/infrastructure/persistence/schema/`, run:
 ```sh
 pnpm run migrate:generate
 ```

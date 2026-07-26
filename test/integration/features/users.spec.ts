@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { apiClient } from './helpers/api'
+import { apiClient } from '@Test/helpers/api'
 
 describe('users', () => {
   it('should fail when trying to create a user with invalid data', async () => {
