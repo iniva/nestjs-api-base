@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.6.0] - 2026-07-26
+
+### Features
+
+- Migrate to hexagonal architecture (#297)
+
+
 ## [1.5.1] - 2026-07-26
 
 ### CI
