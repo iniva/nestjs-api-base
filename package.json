@@ -67,9 +67,9 @@
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "drizzle-kit": "^0.31.10",
-    "eslint": "^10.8.0",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-boundaries": "^7.1.0",
+    "eslint-plugin-boundaries": "^7.2.0",
     "eslint-plugin-prettier": "^5.5.6",
     "git-cliff": "^2.8.0",
     "husky": "^9.1.7",
@@ -80,7 +80,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.0",
-    "typescript-eslint": "^8.65.0"
+    "typescript-eslint": "^8.68.0"
   },
   "jest": {
     "moduleFileExtensions": [
